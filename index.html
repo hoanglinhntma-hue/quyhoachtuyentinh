@@ -1,0 +1,1625 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#09284b">
+<title>LP-LAB 12 | Phòng thí nghiệm quy hoạch tuyến tính và tối ưu thực tiễn</title>
+<style>
+:root{--navy:#102b50;--deep:#09213f;--teal:#118b86;--teal2:#15afa0;--cyan:#ddf7f2;--blue:#2a75c1;--orange:#e98925;--ink:#21364c;--muted:#5e7082;--line:#dce7ee;--bg:#f3f7fb;--card:#fff;--light:#f7fafa;--danger:#b84052;--ok:#117a60;--shadow:0 12px 36px rgba(9,33,63,.08)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;font-size:15px;color:var(--ink);line-height:1.47}button,input,textarea,select{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allowed;opacity:.55}button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid #eec66e;outline-offset:2px}a{color:var(--blue)}h1,h2,h3,p{margin-top:0}.page{width:min(1560px,100%);margin:auto;padding:20px 24px 28px}
+.hero{position:relative;overflow:hidden;color:white;background:linear-gradient(115deg,#09223f 0%,#103963 61%,#0b726e 125%);border-radius:21px;padding:24px 28px;box-shadow:0 16px 35px #09213f1f}.hero:before{content:'';position:absolute;right:-70px;top:-140px;width:500px;height:500px;border:1px solid #ffffff29;border-radius:50%;box-shadow:0 0 0 60px #ffffff09,0 0 0 120px #ffffff07}.hero-inner{position:relative;display:flex;justify-content:space-between;align-items:center;gap:22px}.eyebrow{font-size:12px;font-weight:800;color:#8fe4dc;letter-spacing:1.2px;text-transform:uppercase}.hero h1{font-size:clamp(25px,2.6vw,40px);line-height:1.16;letter-spacing:-.9px;margin:7px 0 10px}.hero-sub{font-size:15px;color:#d7ebf6;max-width:900px;margin:0}.hero-pill{border:1px solid #a6d6e1aa;background:#ffffff15;padding:12px 17px;border-radius:14px;font-weight:800;text-align:center;min-width:175px}.hero-pill small{display:block;font-weight:500;color:#c6e2e5;font-size:11px;margin-top:3px}
+.topline{display:flex;justify-content:space-between;align-items:center;gap:15px;margin:17px 0}.selector{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.selector label{font-weight:800;font-size:13px}.selector select{border:1px solid var(--line);min-width:min(425px,88vw);max-width:100%;border-radius:12px;padding:11px 14px;background:white;font-weight:650;color:var(--ink)}.utility{display:flex;gap:8px;flex-wrap:wrap}.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px 15px;border-radius:11px;border:1px solid transparent;background:white;color:var(--navy);font-size:13px;font-weight:800;transition:background .16s,transform .15s;min-height:40px}.btn:hover:not(:disabled){filter:brightness(.97)}.btn:active{transform:translateY(1px)}.btn.primary{background:var(--teal);color:white}.btn.dark{background:var(--navy);color:white}.btn.orange{background:var(--orange);color:white}.btn.ghost{background:white;border-color:var(--line)}.btn.pale{background:#e4f6f2;color:#0a6d65}.btn.warn{background:#fff3dc;color:#83500a;border-color:#f1dfba}.btn.small{font-size:12px;padding:8px 10px;min-height:33px}.btn.tiny{font-size:11px;padding:5px 8px;min-height:28px}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:16px}.step{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:13px;background:white;padding:11px 13px;min-width:0;text-align:left;color:var(--ink)}.step .n{display:grid;place-items:center;width:28px;height:28px;flex:none;background:#e8eff5;color:#64778a;border-radius:9px;font-weight:900}.step strong{font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.step.active{border-color:#70c9ba;background:#effbf7;box-shadow:0 0 0 1px #b1ede4 inset}.step.active .n{background:var(--teal);color:#fff}.step.done .n{background:#d5eee7;color:#0a7364}
+.workspace{display:grid;grid-template-columns:minmax(390px,0.95fr) minmax(495px,1.32fr) minmax(290px,.73fr);gap:15px;align-items:start}.column{display:flex;flex-direction:column;gap:15px;min-width:0}.card{background:var(--card);border:1px solid #e4ecf1;border-radius:17px;overflow:hidden;box-shadow:var(--shadow)}.card-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 17px;border-bottom:1px solid #e5edf2;background:linear-gradient(100deg,#f7fcfb,#ffffff)}.card-head h2{font-size:16px;margin:0;line-height:1.3;color:var(--navy)}.card-head .tag{font-size:11px;border-radius:20px;background:#e4f6f1;color:#15776e;font-weight:800;padding:5px 9px;white-space:nowrap}.card-body{padding:16px 17px}.story-title{font-size:20px;font-weight:900;color:var(--navy);line-height:1.24;margin-bottom:8px}.story-text{font-size:14px;color:#41586b;line-height:1.57;margin-bottom:12px}.story-source{font-size:11px;font-weight:700;color:#6e8393;margin:10px 0 0}.facts{display:grid;grid-template-columns:1fr 1fr;gap:9px}.fact{border-radius:11px;background:#f1f8fc;border:1px solid #e2eef6;padding:10px 12px}.fact span{display:block;font-size:11px;color:#607689;font-weight:650}.fact strong{font-size:14px;color:#184879}.data-table{width:100%;border-collapse:collapse;font-size:12px;margin:11px 0 0}.data-table th{background:#edf8f6;color:#176d6a;text-align:left}.data-table td,.data-table th{padding:8px 7px;border-bottom:1px solid #e7edf2}.data-table td:first-child{font-weight:650}.mini-hint{font-size:12px;color:#687c8c;margin:9px 0 0}.note{border-radius:11px;padding:10px 12px;background:#f0f9f6;color:#17675d;font-size:12px;line-height:1.5}.note.attention{background:#fff7e9;color:#86551c}.note.error{background:#fff0f2;color:#ae374a}.note.muted{background:#f3f6f8;color:#5a7185}.field-label{font-weight:850;display:block;font-size:12px;color:#486276;margin:7px 0 5px}.control{width:100%;min-width:0;border:1px solid #d5e2e9;border-radius:9px;padding:9px 10px;background:#fff;color:#1f354a}.control.compact{padding:7px 6px;text-align:center;font-size:14px}.field-pair{display:grid;grid-template-columns:1fr 1fr;gap:9px}.objective{display:grid;grid-template-columns:minmax(75px,1fr) 75px 15px 75px 14px 85px;gap:5px;align-items:center;margin:7px 0 12px}.objective b{font-size:13px}.objective input{width:100%}.object-label{font-size:12px;color:#648092;font-weight:800}.eq-head{display:grid;grid-template-columns:minmax(68px,1fr) 45px 12px 45px 55px 61px 22px;gap:4px;font-size:10px;font-weight:800;color:#688196;text-align:center;padding:6px 3px}.eq-row{display:grid;grid-template-columns:minmax(68px,1fr) 45px 12px 45px 55px 61px 22px;gap:4px;align-items:center;margin-bottom:7px}.eq-row .lbl{font-size:11px;color:#456174;font-weight:750;line-height:1.15;overflow-wrap:anywhere}.eq-row .control{padding:7px 3px;border-radius:7px;font-size:13px}.eq-row .rem{border:0;background:#fbecef;color:#ab3b4e;border-radius:6px;height:28px;width:22px;font-size:16px}.eq-row .op{width:100%;border:1px solid #d5e2e9;background:#fff;border-radius:7px;height:34px;font-size:12px}.row-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:11px}.model-result{margin-top:10px;white-space:pre-line;font-size:12px;line-height:1.65;padding:9px 11px;border-radius:10px;background:#f8fbfd;border:1px solid #e3edf3}.model-result:empty{display:none}.model-result.ok{color:#0c775d;background:#edf9f5;border-color:#c3e7dc}.model-result.bad{color:#a33b49;background:#fff2f4;border-color:#f3ced4}.checkline{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:750;margin:13px 0}.checkline input{accent-color:var(--teal);width:17px;height:17px}
+.graph-card{position:relative}.graph-card .card-head{min-height:58px}.graph-tools{display:flex;justify-content:space-between;align-items:center;gap:7px;flex-wrap:wrap;background:#f9fcfe;padding:9px 15px;border-bottom:1px solid #e7edf2}.legend{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:11px;color:#4e6779;font-weight:700}.dot{display:inline-block;width:10px;height:10px;border-radius:3px;vertical-align:middle;margin-right:3px}.dot.green{background:#48b6a2}.dot.red{background:#efb8b0}.dot.violet{background:#7d61d3}.dot.amber{background:#d97706;border-radius:50%}.graph-area{background:#fff;position:relative;padding:10px 13px 3px}.plot-frame{width:100%;height:450px;position:relative}.plot-frame canvas{width:100%;height:100%;display:block;touch-action:none;cursor:grab}.plot-frame canvas:active{cursor:grabbing}.graph-overlay{position:absolute;inset:12% 9% 17% 9%;display:flex;align-items:center;justify-content:center;text-align:center;pointer-events:none}.graph-overlay span{max-width:340px;padding:18px;background:#ffffffed;border:1px solid #dfe9f1;border-radius:14px;box-shadow:0 7px 25px #09213f12;color:#5e7685;font-weight:750}.graph-bottom{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;padding:12px 15px;border-top:1px solid #e5eef4;background:#f9fcfe}.graph-bottom label{font-size:12px;font-weight:800;color:#546c7d}.graph-bottom input[type=range]{width:100%;accent-color:#7456cb}.graph-bottom .level-text{font-size:12px;color:#655297;font-weight:850;min-width:96px;text-align:right}.graph-options{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:9px 15px;font-size:12px;color:#527084}.graph-options label{display:flex;gap:5px;align-items:center;cursor:pointer}.graph-options input{accent-color:var(--teal)}.graph-card:fullscreen{height:100vh;border-radius:0;display:flex;flex-direction:column}.graph-card:fullscreen .graph-area{flex:1;min-height:0;display:flex}.graph-card:fullscreen .plot-frame{height:100%;min-height:0}
+.result-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.result-cell{border-radius:12px;border:1px solid #dceaf0;background:#f6fafc;padding:11px}.result-cell span{display:block;color:#6f8290;font-size:11px;font-weight:700}.result-cell strong{display:block;margin-top:4px;color:#154a71;font-size:15px;overflow-wrap:anywhere}.statusbar{background:#eff9f6;color:#176f62;border:1px solid #c9e6df;border-radius:10px;padding:10px 12px;font-size:12px;font-weight:750;margin-top:12px;line-height:1.5}.statusbar.error{background:#fff2f2;border-color:#f3d3d3;color:#ae3847}.vertex-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:11px}.vertex-table th{background:#f1f6fa;color:#526b82}.vertex-table th,.vertex-table td{padding:7px 6px;text-align:right;border-bottom:1px solid #e5edf2}.vertex-table th:first-child,.vertex-table td:first-child{text-align:left}.vertex-table .best{background:#eaf8f2;font-weight:850;color:#137a65}.vertex-scroll{max-height:255px;overflow:auto}.v-calc{display:inline-flex;align-items:center;gap:4px;justify-content:flex-end}.v-input{width:68px;padding:4px 6px;border:1px solid #cbdbe5;border-radius:6px;text-align:right;font-size:12px;background:#fff}.v-input.correct{border-color:#159a7c;background:#ebfaf5;color:#0d6e57;font-weight:800}.v-input.wrong{border-color:#d9536f;background:#fff0f3;color:#ab2c46}.v-btn{padding:4px 7px;border-radius:6px;border:1px solid #cbdbe5;background:#f3f8fb;font-size:11px;font-weight:800;color:#204969}
+.audit-box{margin-top:10px;border:1px solid #dde8f0;border-radius:11px;background:#f9fcfe;padding:10px 12px;font-size:12px}.audit-box h4{margin:0 0 6px;font-size:12px;color:var(--navy)}.audit-row{display:flex;justify-content:space-between;gap:8px;padding:4px 0;border-bottom:1px dashed #e3edf3}.audit-row:last-child{border-bottom:0}.audit-pass{color:#0f785e;font-weight:750}.audit-fail{color:#b5384b;font-weight:750}
+.calculator{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:end}.calculator label{font-size:12px;font-weight:800;color:#5e7385;display:block;margin-bottom:4px}.calculator input{width:100%;border-radius:9px;border:1px solid #d6e5ed;padding:9px 8px}.decision{margin-top:12px}.decision textarea{width:100%;min-height:86px;padding:10px;border-radius:10px;border:1px solid #d6e4ed;resize:vertical}.reflection-list{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.chip{padding:7px 10px;border:1px solid #d9e9eb;background:#f5fbfa;color:#166e69;border-radius:18px;font-size:11px;font-weight:850}.chatlog{min-height:170px;max-height:290px;overflow:auto;display:flex;flex-direction:column;gap:8px;padding:13px;background:#f9fbfd;border-radius:12px;border:1px solid #e6edf2}.bubble{font-size:12px;line-height:1.52;max-width:95%;border-radius:11px;padding:10px 11px;white-space:pre-line}.bubble.bot{align-self:start;background:#e7f7f2;color:#165951;border:1px solid #cdebe2}.bubble.me{align-self:end;background:#ebf1fc;color:#284a74}.chatinput{display:flex;gap:7px;margin-top:9px}.chatinput input{flex:1;min-width:0;border:1px solid #d6e3ed;border-radius:9px;padding:9px}.chatinput button{min-width:55px}.quick-asks{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}.help-list{padding-left:18px;font-size:12px;color:#526e7e}.help-list li{margin-bottom:7px}.foot{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;font-size:11px;color:#6e8290;padding:17px 4px}.foot b{color:#26526e}
+.dialog{border:0;box-shadow:0 25px 100px #051e397a;border-radius:18px;padding:0;max-height:90vh;width:min(750px,94vw)}.dialog::backdrop{background:#09213f9f}.dialog .card-body{max-height:76vh;overflow:auto}.custom-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.custom-grid label{font-size:12px;font-weight:800;color:#476177}.custom-grid input,.custom-grid textarea,.custom-grid select{display:block;width:100%;border:1px solid #d2e2ed;border-radius:9px;padding:9px;margin-top:5px}.custom-grid .full{grid-column:1/-1}.custom-grid textarea{min-height:95px}.dialog-actions{display:flex;justify-content:flex-end;gap:9px;padding:14px 17px;border-top:1px solid #e9eef2}
+/* Định dạng kí hiệu Toán học chuẩn Sách giáo khoa (SGK Toán 12) */
+.math{font-family:'Cambria Math','Times New Roman',Georgia,serif;font-style:italic;font-weight:600;color:#14385c;white-space:nowrap}
+.math-rm{font-family:'Cambria Math','Times New Roman',Georgia,serif;font-style:normal;font-weight:600;color:#14385c}
+.m-vec{position:relative;display:inline-block;font-family:'Cambria Math','Times New Roman',Georgia,serif;font-style:italic;font-weight:700;padding-top:2px}
+.m-vec::before{content:'→';position:absolute;top:-0.58em;left:50%;transform:translateX(-50%);font-size:0.72em;font-style:normal;font-weight:700;line-height:1}
+.m-frac{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;font-family:'Cambria Math','Times New Roman',Georgia,serif;font-size:0.92em;line-height:1.05;margin:0 2px;position:relative;top:-1px}
+.m-frac > span:first-child{border-bottom:1.3px solid currentColor;padding:0 3px 1px;font-weight:700}
+.m-frac > span:last-child{padding:1px 3px 0;font-weight:700}
+.sgk-preview{margin:12px 0;padding:12px 14px;border-radius:12px;background:linear-gradient(135deg,#f8fcff 0%,#eff8f6 100%);border:1px solid #cfe4ea}
+.sgk-preview-title{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:#146c64;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center}
+.sgk-math-block{font-family:'Cambria Math','Times New Roman',Georgia,serif;font-size:15.5px;color:#102b4e;line-height:1.6}
+.sgk-system{display:inline-flex;align-items:stretch;gap:8px;margin-top:4px;vertical-align:middle}
+.sgk-brace{display:flex;align-items:center;font-family:'Cambria Math','Times New Roman',serif;font-size:38px;font-weight:300;line-height:1;color:#0f4c5c;user-select:none;border-left:2.5px solid #0f4c5c;border-top:2.5px solid #0f4c5c;border-bottom:2.5px solid #0f4c5c;border-radius:8px 0 0 8px;width:9px;margin:2px 0;position:relative}
+.sgk-brace::before{content:'';position:absolute;left:-6px;top:50%;width:5px;height:2.5px;background:#0f4c5c;transform:translateY(-50%)}
+.sgk-system-rows{display:flex;flex-direction:column;justify-content:center;gap:2px}
+.sgk-system-row{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.sgk-system-row small{font-family:system-ui,-apple-system,sans-serif;font-size:11px;color:#5c768a;font-style:normal}
+.student-bar{display:grid;grid-template-columns:1.2fr 0.7fr 1.1fr;gap:8px;margin-bottom:12px;padding:10px 12px;background:#f4f9fc;border:1px solid #dde9f2;border-radius:11px}
+.student-bar label{font-size:11px;font-weight:800;color:#4a657a;display:block;margin-bottom:3px}
+.student-bar input{width:100%;border:1px solid #cbdce8;border-radius:7px;padding:6px 8px;font-size:12.5px;background:#fff}
+.export-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.print-only{display:none}.invisible{display:none!important}
+@media(max-width:1330px){.workspace{grid-template-columns:minmax(360px,.9fr) minmax(470px,1.15fr)}.side-col{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;align-items:start}.hero h1{font-size:31px}}@media(max-width:920px){.page{padding:12px}.workspace{grid-template-columns:1fr}.side-col{grid-column:auto;grid-template-columns:1fr 1fr}.plot-frame{height:400px}.hero{padding:20px}.hero-pill{display:none}.steps{gap:6px}.step{padding:9px}.step strong{font-size:11px}}@media(max-width:680px){.side-col{display:flex;flex-direction:column}.side-col .card{width:100%}.topline{flex-direction:column;align-items:stretch}.selector select{min-width:100%}.selector{display:grid;grid-template-columns:1fr}.steps{grid-template-columns:repeat(2,minmax(0,1fr))}.hero h1{font-size:27px}.hero-sub{font-size:13px}.facts{grid-template-columns:1fr}.objective{grid-template-columns:1fr 55px 12px 55px 12px 72px}.objective .control{padding:7px 3px}.eq-head,.eq-row{grid-template-columns:minmax(52px,1fr) 39px 9px 39px 45px 47px 20px;gap:3px}.eq-row .control{font-size:12px}.eq-row .lbl{font-size:10px}.card-body{padding:13px}.plot-frame{height:350px}.graph-bottom{grid-template-columns:1fr 1fr}.graph-bottom input{grid-column:1/-1;grid-row:2}.graph-bottom .level-text{text-align:right}.result-cards{grid-template-columns:1fr}.calculator{grid-template-columns:1fr 1fr}.calculator .btn{grid-column:1/-1}.custom-grid{grid-template-columns:1fr}.custom-grid .full{grid-column:auto}.student-bar,.export-grid{grid-template-columns:1fr}}
+@media print{body{background:#fff;font-family:'Times New Roman',serif;color:#000}.page{display:none}.print-only{display:block;padding:8mm 12mm;font-size:11.5pt;line-height:1.45}.print-only h1{font-size:16pt;text-align:center;margin-bottom:4px;color:#09213f}.print-only h2{font-size:12.5pt;border-bottom:1.5px solid #102b50;padding-bottom:3px;margin:12px 0 6px;color:#102b50}.print-only table{width:100%;border-collapse:collapse;margin:6px 0}.print-only td,.print-only th{border:1px solid #888;padding:5px 7px;text-align:left;font-size:11pt}.print-only th{background:#eef5f9}.print-only .pnote{font-size:10pt;color:#444;text-align:center;margin-bottom:10px}}
+</style>
+</head>
+<body>
+<main class="page">
+  <header class="hero">
+    <div class="hero-inner">
+      <div><div class="eyebrow">MATHLAB 12 · Chuyên đề 2 – Bài 3 · Toán 12</div><h1>LP-LAB 12 <span style="color:#8ae4cf">– Phòng thí nghiệm quy hoạch tuyến tính</span></h1><p class="hero-sub">Tự đặt biến • Tự lập mô hình chuẩn SGK • Khám phá miền chấp nhận được • Tự tính giá trị tại đỉnh • Xuất phiếu học tập.</p></div>
+      <div class="hero-pill">KHÔNG GIẢI HỘ<small>Khám phá toán học qua từng bước</small></div>
+    </div>
+  </header>
+  <section class="topline" aria-label="Chọn nhiệm vụ">
+    <div class="selector"><label for="scenarioSelect">Tình huống thực tiễn</label><select id="scenarioSelect"></select></div>
+    <div class="utility"><button id="customBtn" class="btn ghost">＋ Tạo bài toán mới</button><button id="resetBtn" class="btn ghost">↺ Làm lại</button><button id="exportImgTopBtn" class="btn pale" title="Tải phiếu học tập dạng ảnh PNG">🖼 Xuất Ảnh</button><button id="exportWordTopBtn" class="btn ghost" title="Tải phiếu học tập dạng Word (.doc)">📄 Xuất Word</button><button id="printBtn" class="btn dark" title="In hoặc Lưu thành PDF">🖨 Xuất PDF / In A4</button></div>
+  </section>
+  <nav class="steps" aria-label="Quy trình học tập">
+    <button class="step active" data-to="contextCard"><span class="n">1</span><strong>Đọc – chọn biến</strong></button>
+    <button class="step" data-to="modelCard"><span class="n">2</span><strong>Tự lập mô hình</strong></button>
+    <button class="step" data-to="graphCard"><span class="n">3</span><strong>Tính đỉnh – trượt mức</strong></button>
+    <button class="step" data-to="decisionCard"><span class="n">4</span><strong>Quyết định – xuất phiếu</strong></button>
+  </nav>
+  <section class="workspace">
+    <div class="column">
+      <article class="card" id="contextCard"><div class="card-head"><h2>① Đọc tình huống và phân tích dữ kiện</h2><span class="tag" id="contextBadge">Tình huống thực tế</span></div><div class="card-body"><h3 class="story-title" id="storyTitle"></h3><p class="story-text" id="storyText"></p><div class="facts"><div class="fact"><span>Gợi ý đại lượng <span class="math">x</span></span><strong id="varXMeaning"></strong></div><div class="fact"><span>Gợi ý đại lượng <span class="math">y</span></span><strong id="varYMeaning"></strong></div></div><div id="factsTable"></div><p class="story-source" id="storySource"></p></div></article>
+      <article class="card" id="modelCard"><div class="card-head"><h2>② Em tự thiết lập mô hình toán học</h2><span class="tag" id="modelTag">Tự thiết lập</span></div><div class="card-body">
+        <div class="field-pair"><div><label class="field-label" for="studentX">Gọi <span class="math">x</span> là (kèm đơn vị &amp; điều kiện):</label><input class="control" id="studentX" placeholder="VD: Số kg sản phẩm I (x ≥ 0)"></div><div><label class="field-label" for="studentY">Gọi <span class="math">y</span> là (kèm đơn vị &amp; điều kiện):</label><input class="control" id="studentY" placeholder="VD: Số kg sản phẩm II (y ≥ 0)"></div></div>
+        <label class="field-label">Hàm mục tiêu <span class="math">F(x; y) = px + qy</span></label><div class="objective"><select id="studentDir" class="control compact" aria-label="Bài toán cực đại hay cực tiểu"><option value="max">Tìm Max</option><option value="min">Tìm Min</option></select><input id="studentP" class="control compact" type="number" step="any" placeholder="p"><b class="object-label"><span class="math">x</span> +</b><input id="studentQ" class="control compact" type="number" step="any" placeholder="q"><b class="object-label"><span class="math">y</span></b><span class="object-label" id="unitLabel"></span></div>
+        <label class="field-label">Hệ bất phương trình ràng buộc <span class="math">ax + by</span> ◇ <span class="math">c</span></label><div class="eq-head"><span>Dữ kiện</span><span><span class="math">a</span></span><span> </span><span><span class="math">b</span></span><span>Dấu</span><span><span class="math">c</span></span><span></span></div><div id="constraintRows"></div><div class="row-actions"><button class="btn small ghost" id="addConstraint">＋ Thêm điều kiện</button><button class="btn small ghost" id="clearModel">Xóa các hệ số</button></div>
+        <label class="checkline"><input type="checkbox" id="nonnegative" checked> Em bổ sung điều kiện không âm: <span class="math">x ≥ 0, y ≥ 0</span>.</label>
+        <div class="sgk-preview" id="sgkPreviewBox" aria-live="polite"></div>
+        <div class="row-actions"><button class="btn primary" id="checkModel">✓ Kiểm tra mô hình</button><button class="btn pale" id="plotStudent">◉ Vẽ miền nghiệm của em</button><button class="btn warn" id="revealModel" disabled title="Hãy thử tự kiểm tra mô hình ít nhất 2 lần trước khi mở gợi ý">🔒 Gợi ý mô hình (0/2)</button></div><div id="modelResult" class="model-result" aria-live="polite"></div>
+      </div></article>
+    </div>
+    <div class="column">
+      <article class="card graph-card" id="graphCard"><div class="card-head"><h2>③ Đồ thị miền chấp nhận được &amp; Đường mức</h2><div class="utility"><button class="btn tiny ghost" id="zoomOut" title="Thu nhỏ">－</button><button class="btn tiny ghost" id="zoomIn" title="Phóng to">＋</button><button class="btn tiny ghost" id="fitView" title="Căn chuẩn khung nhìn">⌖ Căn khung</button><button class="btn tiny dark" id="fullscreenGraph">⛶ Toàn màn hình</button></div></div>
+        <div class="graph-tools"><div class="legend"><span><i class="dot green"></i>Miền chấp nhận được <span class="math-rm">Ω</span></span><span><i class="dot violet"></i>Đường mức <span class="math">F = k</span></span><span><i class="dot amber"></i>Điểm nguyên (<span class="math-rm">ℤ²</span>)</span></div><div class="utility"><button id="showOptimal" class="btn small pale" disabled title="Hãy tự tính giá trị F(x;y) tại ít nhất một đỉnh hoặc kiểm tra phương án ở Bước 5 để mở khóa">🔒 Đối chiếu cực trị</button><button id="saveGraph" class="btn small ghost">⇩ Lưu ảnh đồ thị</button></div></div>
+        <div class="graph-area"><div class="plot-frame"><canvas id="graph" aria-label="Hệ trục Oxy, miền nghiệm và đường mức hàm mục tiêu"></canvas><div id="graphOverlay" class="graph-overlay"><span>Hãy tự điền mô hình ở cột trái rồi nhấn “Vẽ miền nghiệm của em”.</span></div></div></div>
+        <div class="graph-bottom"><label for="levelSlider">Trượt đường mức <span class="math">F(x; y) = k</span></label><input id="levelSlider" type="range" min="0" max="100" step="any" value="50"><span id="levelText" class="level-text">k = —</span></div>
+        <div class="graph-options"><label><input type="checkbox" id="showGrid" checked> Lưới tọa độ</label><label><input type="checkbox" id="showVertices" checked> Hiện đỉnh đa giác</label><label><input type="checkbox" id="showLattice"> Lưới điểm nguyên</label><label><input type="checkbox" id="showGrad"> Vectơ pháp tuyến <span class="m-vec">n</span></label><label><input type="checkbox" id="snapPoints" checked> Bắt điểm đỉnh</label><span style="margin-left:auto;font-size:11px">Kéo để di chuyển • Nhấn để chọn điểm <span class="math">M(x; y)</span></span></div>
+      </article>
+      <article class="card"><div class="card-head"><h2>④ Khảo sát các đỉnh cực biên &amp; Thử nghiệm</h2><span class="tag" id="solveBadge">Chưa phân tích</span></div><div class="card-body"><div class="result-cards"><div class="result-cell"><span>Giá trị tối ưu liên tục</span><strong id="bestValue">—</strong></div><div class="result-cell"><span>Tại đỉnh / tập hợp</span><strong id="bestPoint">—</strong></div><div class="result-cell"><span>Đặc điểm miền &amp; nghiệm</span><strong id="solutionType">—</strong></div></div><div class="statusbar" id="solveStatus">Hãy chọn “Vẽ miền nghiệm của em” để bắt đầu khảo sát các đỉnh.</div>
+        <div class="vertex-scroll"><table class="vertex-table"><thead><tr><th>Đỉnh (Giao của các biên)</th><th>Hoành độ <span class="math">x</span></th><th>Tung độ <span class="math">y</span></th><th>Tự tính <span class="math">F(x; y) = px + qy</span></th></tr></thead><tbody id="vertexBody"><tr><td colspan="4" style="text-align:center">Chưa có dữ liệu đỉnh</td></tr></tbody></table></div>
+        <div id="pointAuditBox" class="audit-box invisible"></div>
+        <p class="mini-hint" id="intResult"></p>
+        <div class="row-actions"><button class="btn small pale" id="experimentDown">−20% nguồn lực 1</button><button class="btn small pale" id="experimentUp">+20% nguồn lực 1</button><button class="btn small ghost" id="experimentReset">Khôi phục dữ kiện gốc</button></div><p class="mini-hint">Thí nghiệm độ nhạy (Sensitivity Analysis): thay đổi giới hạn điều kiện 1 sau khi lập đúng mô hình để quan sát sự dịch chuyển của các đỉnh.</p></div></article>
+      <article class="card" id="decisionCard"><div class="card-head"><h2>⑤ Kết luận của em &amp; Xuất Phiếu học tập</h2><span class="tag">Báo cáo &amp; Nộp bài</span></div><div class="card-body">
+        <div class="student-bar" aria-label="Thông tin học sinh trên phiếu học tập">
+          <div><label for="studentName">Họ và tên học sinh / Nhóm</label><input id="studentName" placeholder="VD: Nguyễn Văn An – Nhóm 1"></div>
+          <div><label for="studentClass">Lớp</label><input id="studentClass" placeholder="VD: 12A1"></div>
+          <div><label for="studentSchool">Trường THPT</label><input id="studentSchool" placeholder="VD: THPT Chuyên..."></div>
+        </div>
+        <div class="calculator"><div><label for="decisionX">Phương án <span class="math">x</span> em chọn</label><input type="text" inputmode="decimal" id="decisionX" placeholder="Nhập x (VD: 20 hoặc 10/3)"></div><div><label for="decisionY">Phương án <span class="math">y</span> em chọn</label><input type="text" inputmode="decimal" id="decisionY" placeholder="Nhập y (VD: 30 hoặc 20/3)"></div><button id="checkDecision" class="btn orange">Thẩm định phương án</button></div><div id="decisionFeedback" class="model-result" aria-live="polite"></div><div class="decision"><label class="field-label" for="reflection">Báo cáo của em: Vì sao phương án này tối ưu? Nguồn lực nào đã dùng hết (ràng buộc chặt), nguồn lực nào còn dư?</label><textarea id="reflection" placeholder="Em chọn phương án (x; y) = ... vì qua bảng khảo sát các đỉnh, giá trị F đạt ...; Khi đó nguồn lực ... vừa hết và còn dư ..."></textarea><div class="reflection-list"><button class="chip" data-reflect="Em đã tự tính và đối chiếu giá trị F(x;y) tại tất cả các đỉnh của miền chấp nhận được Ω.">Đã tính F tại các đỉnh</button><button class="chip" data-reflect="Phương án tối ưu nằm tại giao điểm của hai đường biên ràng buộc chặt (sử dụng hết 100% hai nguồn lực này).">Phân tích nguồn lực dư/hết</button><button class="chip" data-reflect="Vì biến số đòi hỏi giá trị nguyên nên em đã kiểm tra các điểm nguyên (x; y) ∈ ℤ² nằm trong miền chấp nhận được.">Biện luận nghiệm nguyên</button></div></div>
+        <label class="field-label" style="margin-top:14px">Xuất Phiếu học tập (đầy đủ mô hình chuẩn SGK, đồ thị miền nghiệm &amp; bảng đỉnh):</label>
+        <div class="export-grid">
+          <button class="btn primary" id="exportImagePassport">🖼 Xuất Ảnh (.PNG)</button>
+          <button class="btn dark" id="exportWordPassport">📄 Xuất Word (.DOC)</button>
+          <button class="btn orange" id="printPassport">🖨 Xuất PDF / In A4</button>
+        </div>
+        <div class="row-actions" style="margin-top:8px"><button class="btn small ghost" id="downloadPassport">⇩ Tải tệp văn bản (.TXT)</button></div>
+      </div></article>
+    </div>
+    <aside class="column side-col">
+      <article class="card"><div class="card-head"><h2>✦ Trợ lý Socratic thông minh</h2><span class="tag">Gợi mở theo trạng thái</span></div><div class="card-body"><p class="mini-hint" style="margin-top:0">Trợ lý phân tích chính xác bước làm hiện tại của em để đặt câu hỏi gợi mở, tuyệt đối không làm bài thay em.</p><div class="chatlog" id="chatlog" aria-live="polite"></div><div class="quick-asks"><button class="chip" data-ask="kiểm tra giúp em">Đánh giá bước hiện tại</button><button class="chip" data-ask="đặt biến">Cách đặt biến</button><button class="chip" data-ask="ràng buộc">Lập bất phương trình</button><button class="chip" data-ask="tìm đỉnh">Cách tìm tọa độ đỉnh</button><button class="chip" data-ask="đường mức">Ý nghĩa đường mức</button></div><div class="chatinput"><input id="chatInput" placeholder="Hỏi trợ lý (VD: Sao em vẽ chưa ra đỉnh?)" aria-label="Câu hỏi cho trợ lý"><button id="sendChat" class="btn primary small">Gửi</button></div></div></article>
+      <article class="card"><div class="card-head"><h2>Phương pháp &amp; Cơ sở toán học</h2><span class="tag">Sư phạm Toán 12</span></div><div class="card-body"><ol class="help-list"><li><b>Mô hình hóa:</b> Chuyển bài toán thực tiễn thành bài toán tìm GTLN (<span class="math-rm">max</span>) hoặc GTNN (<span class="math-rm">min</span>) của hàm bậc nhất <span class="math">F(x; y) = px + qy</span> trên hệ bất phương trình bậc nhất hai ẩn.</li><li><b>Định lý cơ bản (Định lý cực biên):</b> Nếu miền chấp nhận được <span class="math-rm">Ω</span> là miền đa giác lồi khác rỗng và bài toán có giá trị tối ưu hữu hạn, thì giá trị tối ưu luôn đạt được tại ít nhất một <b>đỉnh</b> của <span class="math-rm">Ω</span> (hoặc trên cả một cạnh nối hai đỉnh).</li><li><b>Phương pháp đường mức:</b> Họ đường thẳng <span class="math">Δ: px + qy = k</span> có vectơ pháp tuyến <span class="m-vec">n</span> <span class="math">= (p; q)</span> chỉ hướng tăng của <span class="math">F(x; y)</span>.</li><li><b>Thực tiễn và Toán học:</b> Nếu biến là số chuyến xe, số sản phẩm nguyên chiếc, cần kiểm tra điểm có tọa độ nguyên <span class="math">(x; y)</span> <span class="math-rm">∈ ℤ²</span> nằm trong miền <span class="math-rm">Ω</span>.</li></ol><div class="note attention" id="sourceNotice">Học liệu bám sát Yêu cầu cần đạt của Chuyên đề 2: Ứng dụng toán học giải quyết một số bài toán tối ưu – Chương trình GDPT 2018 môn Toán lớp 12.</div><div class="row-actions"><button id="teacherTips" class="btn small ghost">Kịch bản dạy học 4 trạm</button></div><div id="teacherTipContent" class="mini-hint invisible"><b>Trạm 1 (Mô hình hóa):</b> Học sinh thảo luận lập hệ bất phương trình trên phiếu, nhập vào Bước ② để xem mô hình chuẩn SGK và nhận phản hồi từng dòng.<br><b>Trạm 2 (Hình học giải tích):</b> Quan sát miền <span class="math-rm">Ω</span>, tự giải hệ phương trình tìm giao điểm và tự tính <span class="math">F(x; y)</span> tại các đỉnh ở Bước ④.<br><b>Trạm 3 (Đường mức &amp; Độ nhạy):</b> Kéo thanh trượt <span class="math">F = k</span> theo hướng vectơ pháp tuyến <span class="m-vec">n</span> và thử tăng/giảm 20% nguồn lực.<br><b>Trạm 4 (Báo cáo quản trị):</b> Biện luận nghiệm nguyên, chỉ ra nguồn lực dư thừa và xuất Phiếu học tập (Ảnh / Word / PDF).</div></div></article>
+    </aside>
+  </section>
+  <footer class="foot"><span><b>LP-LAB 12 · MathLab 12 (Phiên bản nâng cấp chuẩn Kí hiệu SGK &amp; Xuất học liệu đa phương tiện)</b> — Thiết kế chuyên biệt cho Chuyên đề học tập Toán 12.</span><span>Hiển thị Toán học chuẩn SGK · Xuất Ảnh PNG / Word / PDF · Chạy độc lập 100%</span></footer>
+</main>
+<section class="print-only" id="printArea"></section>
+<dialog id="customDialog" class="dialog" aria-label="Tạo tình huống toán học mới"><div class="card-head"><h2>＋ Giáo viên tự tạo tình huống quy hoạch tuyến tính</h2><button class="btn tiny ghost" id="closeCustom">✕ Đóng</button></div><div class="card-body"><p class="mini-hint">Điền một bài toán hai biến. Mỗi điều kiện viết một dòng theo mẫu: <code>Tên | a | b | ≤ hoặc ≥ | c | đơn vị</code>. Các ràng buộc <span class="math">x ≥ 0, y ≥ 0</span> được thêm khi học sinh tích chọn điều kiện không âm.</p><div class="custom-grid"><label>Tên tình huống<input id="customTitle" value="Kế hoạch sản xuất tự tạo"></label><label>Đơn vị hàm mục tiêu<input id="customUnit" value="triệu đồng"></label><label class="full">Mô tả tình huống<textarea id="customStory">Một cơ sở cần chọn số lượng sản phẩm X và Y. Hãy xây dựng hệ điều kiện và tìm lợi nhuận tối ưu.</textarea></label><label>Ý nghĩa x<input id="customX" value="Số sản phẩm loại X"></label><label>Ý nghĩa y<input id="customY" value="Số sản phẩm loại Y"></label><label>Hệ số p (của x trong F)<input id="customP" type="number" step="any" value="5"></label><label>Hệ số q (của y trong F)<input id="customQ" type="number" step="any" value="4"></label><label>Hướng tối ưu<select id="customDir"><option value="max">Tìm Max (Cực đại)</option><option value="min">Tìm Min (Cực tiểu)</option></select></label><label>Số lượng phải nguyên?<select id="customInteger"><option value="false">Không bắt buộc (Liên tục)</option><option value="true">Bắt buộc nguyên (x, y ∈ ℤ)</option></select></label><label class="full">Các ràng buộc (mỗi dòng một điều kiện)<textarea id="customConstraints">Nguồn lực A | 1 | 1 | ≤ | 10 | đơn vị
+Nguồn lực B | 2 | 1 | ≤ | 16 | đơn vị</textarea></label></div><div id="customError" class="model-result bad"></div></div><div class="dialog-actions"><button id="createCustom" class="btn primary">Lưu và sử dụng tình huống</button></div></dialog>
+<script>
+'use strict';
+(function(){
+ const $=id=>document.getElementById(id);
+ const CLRS=['#159a8c','#e08b26','#4368c9','#ab5ea8','#cf5950','#3b8ea5','#6d963c'];
+ const SCENARIOS=[
+  {id:'xuong',title:'Xưởng sản xuất hai loại sản phẩm',source:'Mô hình minh họa theo Bài 3, Chuyên đề 2 Toán 12. Nội dung lời dẫn được biên soạn phục vụ khám phá.',badge:'Ví dụ chuẩn SGK 12',story:'Một xưởng sản xuất hai loại sản phẩm I và II. Mỗi kilôgam sản phẩm loại I cần dùng 1 đơn vị nguyên liệu A và 2 đơn vị nguyên liệu B; mỗi kilôgam loại II cần dùng 2 đơn vị nguyên liệu A và 1 đơn vị nguyên liệu B. Xưởng có tối đa 100 đơn vị nguyên liệu A và 80 đơn vị nguyên liệu B. Lợi nhuận thu được khi bán 1 kg sản phẩm loại I là 40 nghìn đồng, loại II là 30 nghìn đồng. Hãy lập kế hoạch sản xuất để tổng lợi nhuận lớn nhất.',xMeaning:'Số kg sản phẩm loại I (x ≥ 0)',yMeaning:'Số kg sản phẩm loại II (y ≥ 0)',xShort:'SP I',yShort:'SP II',unit:'nghìn đồng',p:40,q:30,dir:'max',integer:false,conditions:[{label:'Nguyên liệu A',a:1,b:2,op:'≤',c:100,unit:'đơn vị'},{label:'Nguyên liệu B',a:2,b:1,op:'≤',c:80,unit:'đơn vị'}],viewMax:105},
+  {id:'xe',title:'Điều phối xe đưa học sinh đi trải nghiệm',source:'Tình huống thực tiễn điển hình về Quy hoạch tuyến tính nguyên (Vận tải).',badge:'Nghiệm nguyên – Vận tải',story:'Một trường THPT cần thuê xe chở ít nhất 140 học sinh và ít nhất 9 tấn thiết bị đi dã ngoại. Nơi cho thuê chỉ có tối đa 10 xe loại A và 9 xe loại B, nhưng trường chỉ có tối đa 8 tài xế. Mỗi xe loại A chở được 20 học sinh và 0,6 tấn hàng, giá thuê 4 triệu đồng. Mỗi xe loại B chở được 10 học sinh và 1,5 tấn hàng, giá thuê 3 triệu đồng. Hỏi cần thuê mấy xe mỗi loại để chi phí thấp nhất?',xMeaning:'Số xe loại A thuê (nguyên, 0 ≤ x ≤ 10)',yMeaning:'Số xe loại B thuê (nguyên, 0 ≤ y ≤ 9)',xShort:'Xe A',yShort:'Xe B',unit:'triệu đồng',p:4,q:3,dir:'min',integer:true,conditions:[{label:'Số chỗ học sinh',a:20,b:10,op:'≥',c:140,unit:'học sinh'},{label:'Khối lượng hàng',a:0.6,b:1.5,op:'≥',c:9,unit:'tấn'},{label:'Số lượng tài xế',a:1,b:1,op:'≤',c:8,unit:'xe'},{label:'Giới hạn xe A',a:1,b:0,op:'≤',c:10,unit:'xe'},{label:'Giới hạn xe B',a:0,b:1,op:'≤',c:9,unit:'xe'}],viewMax:14},
+  {id:'phanbon',title:'Bài toán tỉ lệ thực tế vs. Làm tròn số',source:'Tình huống chứng minh sai lầm nếu chỉ làm tròn nghiệm liên tục sang nghiệm nguyên.',badge:'Bẫy làm tròn nghiệm nguyên',story:'Một đội vận chuyển cần chở ít nhất 100 hành khách với tối đa 4 chuyến xe. Xe cỡ vừa (A) chở 20 người/chuyến, chi phí 4 triệu đồng; xe cỡ lớn (B) chở 30 người/chuyến, chi phí 5 triệu đồng. Hãy so sánh nghiệm tối ưu liên tục (trên lí thuyết) và phương án số xe nguyên thực tế.',xMeaning:'Số xe loại A (20 chỗ, nguyên)',yMeaning:'Số xe loại B (30 chỗ, nguyên)',xShort:'Xe A',yShort:'Xe B',unit:'triệu đồng',p:4,q:5,dir:'min',integer:true,conditions:[{label:'Tổng số chỗ',a:20,b:30,op:'≥',c:100,unit:'chỗ'},{label:'Tổng số xe',a:1,b:1,op:'≤',c:4,unit:'xe'}],viewMax:6},
+  {id:'dinhduong',title:'Khẩu phần dinh dưỡng tối thiểu hóa chi phí',source:'Bài toán khẩu phần (Diet Problem) kinh điển của George Stigler & George Dantzig.',badge:'Miền không bị chặn trên',story:'Một bếp ăn sử dụng hai gói thực phẩm A và B. Mỗi gói A cung cấp 1 đơn vị chất đạm (P) và 3 đơn vị khoáng chất (Q); mỗi gói B cung cấp 2 đơn vị P và 1 đơn vị Q. Khẩu phần mỗi ngày phải có ít nhất 8 đơn vị P và 9 đơn vị Q. Giá mỗi gói A là 30 nghìn đồng, gói B là 40 nghìn đồng. Hãy tìm chi phí nhỏ nhất (miền nghiệm không bị chặn nhưng vẫn có GTNN hữu hạn).',xMeaning:'Lượng gói thực phẩm A (x ≥ 0)',yMeaning:'Lượng gói thực phẩm B (y ≥ 0)',xShort:'Gói A',yShort:'Gói B',unit:'nghìn đồng',p:30,q:40,dir:'min',integer:false,conditions:[{label:'Chất đạm P',a:1,b:2,op:'≥',c:8,unit:'đv'},{label:'Khoáng chất Q',a:3,b:1,op:'≥',c:9,unit:'đv'}],viewMax:11},
+  {id:'dongopt',title:'Bài toán có vô số phương án tối ưu trên cạnh',source:'Tình huống rèn luyện tư duy khi đường mức F = k song song với một đường biên ràng buộc.',badge:'Vô số nghiệm trên đoạn',story:'Một cơ sở sản xuất hai loại sản phẩm X và Y. Một đơn vị X cần 2 đơn vị vật liệu A và 1 đơn vị vật liệu B; một đơn vị Y cần 1 đơn vị vật liệu A và 1 đơn vị vật liệu B. Tổng vật liệu A không quá 8 đơn vị, vật liệu B không quá 6 đơn vị. Lợi nhuận mỗi đơn vị X là 2 triệu đồng, mỗi đơn vị Y là 1 triệu đồng. Hãy tìm tất cả các phương án đạt lợi nhuận tối đa.',xMeaning:'Sản lượng sản phẩm X',yMeaning:'Sản lượng sản phẩm Y',xShort:'SP X',yShort:'SP Y',unit:'triệu đồng',p:2,q:1,dir:'max',integer:false,conditions:[{label:'Vật liệu A',a:2,b:1,op:'≤',c:8,unit:'đv'},{label:'Vật liệu B',a:1,b:1,op:'≤',c:6,unit:'đv'}],viewMax:9}
+ ];
+
+ let active,inputs=[],plotReady=false,modelVerified=false,showOpt=false,graphView=null,level=0,currentLP=null,vertices=[],chosenPoint=null,experimentsChanged=false;
+ let vertexChecks={}; // lưu trạng thái học sinh tự tính F tại từng đỉnh
+ let progress={checkCount:0,reveal:false,modelOK:false,vertexCalculated:0,decisionOK:false};
+ let panState=null;
+
+ function clone(x){return JSON.parse(JSON.stringify(x));}
+ function gcd(a,b){a=Math.abs(a);b=Math.abs(b);while(b){const t=b;b=a%b;a=t;}return a||1;}
+ // Biểu diễn phân số chính xác để học sinh thấy vẻ đẹp toán học (VD: 10/3 thay vì 3,3333)
+ function toFraction(val,maxDen=120){
+  if(!Number.isFinite(val))return null;
+  if(Math.abs(val-Math.round(val))<1e-7)return {n:Math.round(val),d:1};
+  let bestN=Math.round(val),bestD=1,minErr=Math.abs(val-bestN);
+  for(let d=2;d<=maxDen;d++){
+   const n=Math.round(val*d),err=Math.abs(val-n/d);
+   if(err<1e-7){const g=gcd(n,d);return {n:n/g,d:d/g};}
+   if(err<minErr){minErr=err;bestN=n;bestD=d;}
+  }
+  return minErr<1e-5?{n:bestN,d:bestD}:null;
+ }
+ function fnum(x,withFrac=false){
+  if(!Number.isFinite(x))return '—';
+  if(Math.abs(x)<1e-10)return '0';
+  const dec=(Math.round(x*10000)/10000).toLocaleString('vi-VN',{maximumFractionDigits:4});
+  if(withFrac){
+   const fr=toFraction(x);
+   if(fr&&fr.d>1)return `${fr.n}/${fr.d} (≈ ${dec})`;
+  }
+  return dec;
+ }
+ function fcoord(x){
+  if(!Number.isFinite(x))return '—';
+  if(Math.abs(x)<1e-10)return '0';
+  const fr=toFraction(x);
+  if(fr&&fr.d>1&&fr.d<=30)return `${fr.n}/${fr.d}`;
+  return (Math.round(x*1000)/1000).toLocaleString('vi-VN',{maximumFractionDigits:3});
+ }
+ // Hiển thị số hoặc phân số dạng công thức SGK (có gạch ngang phân số)
+ function fmath(x,showApprox=true){
+  if(!Number.isFinite(x))return '—';
+  if(Math.abs(x)<1e-10)return '<span class="math-rm">0</span>';
+  const dec=(Math.round(x*10000)/10000).toLocaleString('vi-VN',{maximumFractionDigits:4});
+  const fr=toFraction(x);
+  if(fr&&fr.d>1&&fr.d<=120){
+   const sign=fr.n<0?'−':'';
+   const fracHtml=`${sign}<span class="m-frac"><span>${Math.abs(fr.n)}</span><span>${fr.d}</span></span>`;
+   return showApprox?`${fracHtml} <small style="color:#60788a;font-weight:600">(≈ ${dec})</small>`:fracHtml;
+  }
+  return `<span class="math-rm">${dec}</span>`;
+ }
+ // Định dạng vế trái biểu thức bậc nhất a*x + b*y chuẩn SGK (ẩn hệ số 0, viết 1x thành x)
+ function formatLinearExpr(aRaw,bRaw,htmlMode=true){
+  const a=numeric(aRaw),b=numeric(bRaw);
+  const aHas=String(aRaw??'').trim()!==''&&Number.isFinite(a);
+  const bHas=String(bRaw??'').trim()!==''&&Number.isFinite(b);
+  if(!aHas&&!bHas)return htmlMode?'<span class="math">a·x + b·y</span>':'a·x + b·y';
+  const parts=[];
+  if(!aHas){
+   parts.push(htmlMode?'<span class="math">?·x</span>':'?·x');
+  }else if(Math.abs(a)>1e-11){
+   const absA=Math.abs(a),sA=a<0?'−':'';
+   const coefA=dAlmost(absA,1)?'':fnum(absA);
+   parts.push(htmlMode?`${sA}<span class="math-rm">${coefA}</span><span class="math">x</span>`:`${sA}${coefA}x`);
+  }
+  if(!bHas){
+   const op=parts.length?' + ':'';
+   parts.push(htmlMode?`${op}<span class="math">?·y</span>`:`${op}?·y`);
+  }else if(Math.abs(b)>1e-11){
+   const absB=Math.abs(b);
+   const coefB=dAlmost(absB,1)?'':fnum(absB);
+   if(parts.length){
+    const sign=b<0?' − ':' + ';
+    parts.push(htmlMode?`${sign}<span class="math-rm">${coefB}</span><span class="math">y</span>`:`${sign}${coefB}y`);
+   }else{
+    const sign=b<0?'−':'';
+    parts.push(htmlMode?`${sign}<span class="math-rm">${coefB}</span><span class="math">y</span>`:`${sign}${coefB}y`);
+   }
+  }
+  if(!parts.length)return htmlMode?'<span class="math-rm">0</span>':'0';
+  return parts.join('');
+ }
+ // Cập nhật khung Xem trước Mô hình Toán học chuẩn SGK ở Bước 2
+ function updateSGKPreview(){
+  const box=$('sgkPreviewBox');if(!box)return;
+  const dir=$('studentDir').value==='max'?'max':'min';
+  const dirVN=dir==='max'?'Giá trị lớn nhất (Max)':'Giá trị nhỏ nhất (Min)';
+  const pVal=$('studentP').value,qVal=$('studentQ').value;
+  const objExpr=formatLinearExpr(pVal,qVal,true);
+  const rowsHtml=inputs.map((r,idx)=>{
+   const lhs=formatLinearExpr(r.a,r.b,true);
+   const rhs=String(r.c??'').trim()!==''&&Number.isFinite(numeric(r.c))?`<span class="math-rm">${fnum(numeric(r.c))}</span>`:'<span class="math">?</span>';
+   return `<div class="sgk-system-row"><span>${lhs} <span class="math-rm">${esc(r.op)}</span> ${rhs}</span><small>(${esc(r.label||('ĐK '+(idx+1)))})</small></div>`;
+  });
+  if($('nonnegative').checked){
+   rowsHtml.push(`<div class="sgk-system-row"><span><span class="math">x</span> <span class="math-rm">≥ 0</span>; &nbsp;<span class="math">y</span> <span class="math-rm">≥ 0</span>${active?.integer?' &nbsp;(<span class="math">x, y</span> <span class="math-rm">∈ ℤ</span>)':''}</span><small>(Điều kiện thực tiễn)</small></div>`);
+  }
+  box.innerHTML=`<div class="sgk-preview-title"><span>📘 Biểu diễn mô hình chuẩn SGK Toán 12</span><span>${dirVN}</span></div>
+   <div class="sgk-math-block">
+    <div>Tìm <span class="math-rm">${dir}</span> <span class="math">F(x; y)</span> <span class="math-rm">=</span> ${objExpr} <small style="font-family:system-ui,sans-serif;font-size:11.5px;color:#526f82">(${esc(active?.unit||'')})</small></div>
+    <div style="font-size:12px;font-family:system-ui,sans-serif;color:#4a657a;margin-top:3px">với <span class="math">(x; y)</span> thỏa mãn hệ bất phương trình bậc nhất hai ẩn:</div>
+    <div class="sgk-system"><div class="sgk-brace" aria-hidden="true"></div><div class="sgk-system-rows">${rowsHtml.join('')}</div></div>
+   </div>`;
+ }
+ // Hỗ trợ học sinh nhập cả số thập phân lẫn phân số dạng a/b
+ function numeric(v){
+  if(v===null||v===undefined)return NaN;
+  const s=String(v).trim().replace(',','.');
+  if(!s)return NaN;
+  if(s.includes('/')){
+   const parts=s.split('/');
+   if(parts.length===2){
+    const num=Number(parts[0].trim()),den=Number(parts[1].trim());
+    if(Number.isFinite(num)&&Number.isFinite(den)&&Math.abs(den)>1e-12)return num/den;
+   }
+   return NaN;
+  }
+  return Number(s);
+ }
+ function dAlmost(a,b){return Math.abs(a-b)<=1e-6*Math.max(1,Math.abs(a),Math.abs(b));}
+ function norm(c){const sign=c.op==='≥'?-1:1;return {a:sign*c.a,b:sign*c.b,c:sign*c.c,label:c.label};}
+ function lc(cs){return cs.map(norm);}
+ function withNonNeg(cs,includeNonNeg){
+  return includeNonNeg?[...cs,{label:'x ≥ 0',a:1,b:0,op:'≥',c:0,unit:''},{label:'y ≥ 0',a:0,b:1,op:'≥',c:0,unit:''}]:[...cs];
+ }
+ function valuesValid(row){
+  return Number.isFinite(row.a)&&Number.isFinite(row.b)&&Number.isFinite(row.c)&&(Math.abs(row.a)>1e-11||Math.abs(row.b)>1e-11)&&(row.op==='≤'||row.op==='≥');
+ }
+ function feasible(x,y,cs){
+  return cs.every(e=>{
+   const v=e.a*x+e.b*y;
+   const tol=1e-7*Math.max(1,Math.abs(v),Math.abs(e.c));
+   return e.op==='≤'?v<=e.c+tol:v>=e.c-tol;
+  });
+ }
+ function oneBound(cons){
+  let lo=-Infinity,hi=Infinity;
+  for(const e of cons){
+   if(!Number.isFinite(e.a)||!Number.isFinite(e.c))return null;
+   if(Math.abs(e.a)<1e-12){if(e.c<-1e-8)return null;continue;}
+   const edge=e.c/e.a;
+   if(e.a>0)hi=Math.min(hi,edge);else lo=Math.max(lo,edge);
+  }
+  if(lo>hi+1e-7*Math.max(1,Math.abs(lo),Math.abs(hi)))return null;
+  return {lo,hi};
+ }
+ function eliminateY(cs){
+  const base=[],upper=[],lower=[];
+  for(const e of cs){
+   if(Math.abs(e.b)<1e-12){base.push({a:e.a,c:e.c});}
+   else{
+    const slope=-e.a/e.b,inter=e.c/e.b;
+    if(e.b>0)upper.push({slope,inter});else lower.push({slope,inter});
+   }
+  }
+  for(const lo of lower)for(const hi of upper)base.push({a:lo.slope-hi.slope,c:hi.inter-lo.inter});
+  return base;
+ }
+ function pickBound(r){
+  if(!r)return null;
+  if(Number.isFinite(r.lo)&&Number.isFinite(r.hi))return (r.lo+r.hi)/2;
+  if(Number.isFinite(r.lo))return Math.max(0,r.lo)+1;
+  if(Number.isFinite(r.hi))return Math.min(0,r.hi)-1;
+  return 0;
+ }
+ function yRangeAt(cs,x){return oneBound(cs.map(e=>({a:e.b,c:e.c-e.a*x})));}
+ function getWitness(cs){
+  const r=oneBound(eliminateY(cs));if(!r)return null;
+  const x=pickBound(r),yr=yRangeAt(cs,x);if(!yr)return null;
+  return {x,y:pickBound(yr)};
+ }
+ // Kiểm tra miền chấp nhận được có bị chặn hay không
+ function isRegionBounded(cs){
+  const dirs=[{p:1,q:0,dir:'max'},{p:1,q:0,dir:'min'},{p:0,q:1,dir:'max'},{p:0,q:1,dir:'min'}];
+  return dirs.every(d=>optimalLP(cs,d).status==='attained');
+ }
+ function optimalLP(cs,objective){
+  const normals=lc(cs),witness=getWitness(normals);
+  if(!witness)return {status:'empty',witness:null};
+  const p=objective.p,q=objective.q,len=Math.hypot(p,q);
+  if(len<1e-13)return {status:'attained',value:0,point:witness,face:{type:'all'},witness};
+  const P=p/len,Q=q/len;
+  const tr=normals.map(e=>({a:e.a*P+e.b*Q,b:-e.a*Q+e.b*P,c:e.c}));
+  const interval=oneBound(eliminateY(tr));
+  if(!interval)return {status:'empty',witness};
+  const lim=objective.dir==='max'?interval.hi:interval.lo;
+  if(!Number.isFinite(lim))return {status:'unbounded',witness};
+  const yr=yRangeAt(tr,lim);
+  if(!yr)return {status:'unstable',witness};
+  const vv=pickBound(yr);
+  const x=P*lim-Q*vv,y=Q*lim+P*vv;
+  let pt={x:Math.abs(x)<1e-10?0:x,y:Math.abs(y)<1e-10?0:y};
+  let face=null;
+  if(Number.isFinite(yr.lo)&&Number.isFinite(yr.hi)&&yr.hi-yr.lo>1e-6*Math.max(1,Math.abs(yr.lo),Math.abs(yr.hi))){
+   const pA={x:P*lim-Q*yr.lo,y:Q*lim+P*yr.lo};
+   const pB={x:P*lim-Q*yr.hi,y:Q*lim+P*yr.hi};
+   face={type:'segment',a:pA,b:pB};
+   pt=pA; // Ưu tiên hiển thị một đỉnh đầu mút thay vì trung điểm để học sinh đối chiếu bảng đỉnh
+  }else if(!Number.isFinite(yr.lo)||!Number.isFinite(yr.hi)){
+   face={type:(!Number.isFinite(yr.lo)&&!Number.isFinite(yr.hi))?'line':'ray'};
+   if(Number.isFinite(yr.lo))pt={x:P*lim-Q*yr.lo,y:Q*lim+P*yr.lo};
+   else if(Number.isFinite(yr.hi))pt={x:P*lim-Q*yr.hi,y:Q*lim+P*yr.hi};
+  }
+  return {status:'attained',value:lim*len,point:pt,face,witness};
+ }
+ // Tìm các đỉnh thực sự của đa giác nghiệm kèm tên hai đường thẳng tạo nên đỉnh đó
+ function intersections(cs){
+  const ns=lc(cs),out=[];
+  for(let i=0;i<ns.length;i++){
+   for(let j=i+1;j<ns.length;j++){
+    const a=ns[i],b=ns[j],D=a.a*b.b-b.a*a.b;
+    if(Math.abs(D)<1e-11*Math.max(1,Math.abs(a.a*b.b),Math.abs(b.a*a.b)))continue;
+    const x=(a.c*b.b-b.c*a.b)/D,y=(a.a*b.c-b.a*a.c)/D;
+    if(!Number.isFinite(x)||!Number.isFinite(y)||!feasible(x,y,cs))continue;
+    const cx=Math.abs(x)<1e-9?0:x,cy=Math.abs(y)<1e-9?0:y;
+    const existing=out.find(pt=>Math.hypot(pt.x-cx,pt.y-cy)<1e-6*Math.max(1,Math.abs(cx),Math.abs(cy)));
+    const pairLabel=`${cs[i].label||('d'+(i+1))} ∩ ${cs[j].label||('d'+(j+1))}`;
+    if(!existing){
+     out.push({x:cx,y:cy,lines:[cs[i].label||('d'+(i+1)),cs[j].label||('d'+(j+1))],pairLabel});
+    }else{
+     for(const lb of [cs[i].label,cs[j].label]){if(lb&&!existing.lines.includes(lb))existing.lines.push(lb);}
+    }
+   }
+  }
+  const center={x:out.reduce((s,t)=>s+t.x,0)/(out.length||1),y:out.reduce((s,t)=>s+t.y,0)/(out.length||1)};
+  return out.sort((a,b)=>Math.atan2(a.y-center.y,a.x-center.x)-Math.atan2(b.y-center.y,b.x-center.x));
+ }
+ // Bộ giải Quy hoạch nguyên nâng cấp: giải được cả khi miền không bị chặn trên nhưng hàm mục tiêu tìm Min dương
+ function integerLP(cs,objective){
+  const minX=optimalLP(cs,{p:1,q:0,dir:'min'}),minY=optimalLP(cs,{p:0,q:1,dir:'min'});
+  if(minX.status==='empty'||minY.status==='empty')return {status:'empty'};
+  let maxX=optimalLP(cs,{p:1,q:0,dir:'max'}),maxY=optimalLP(cs,{p:0,q:1,dir:'max'});
+  let loX=minX.status==='attained'?Math.ceil(minX.value-1e-8):-50;
+  let loY=minY.status==='attained'?Math.ceil(minY.value-1e-8):-50;
+  let hiX=maxX.status==='attained'?Math.floor(maxX.value+1e-8):null;
+  let hiY=maxY.status==='attained'?Math.floor(maxY.value+1e-8):null;
+  // Nếu miền không bị chặn nhưng tìm Min với p > 0, q > 0 và x >= 0, y >= 0, ta chặn trên bằng một điểm nguyên khả thi
+  if((hiX===null||hiY===null)&&objective.dir==='min'&&objective.p>0&&objective.q>0&&loX>=0&&loY>=0){
+   const cont=optimalLP(cs,objective);
+   if(cont.status==='attained'){
+    const guessX=Math.ceil(cont.point.x)+2,guessY=Math.ceil(cont.point.y)+2;
+    const boundVal=objective.p*guessX+objective.q*guessY+Math.max(objective.p,objective.q)*5;
+    if(hiX===null)hiX=Math.floor((boundVal-objective.q*loY)/objective.p)+2;
+    if(hiY===null)hiY=Math.floor((boundVal-objective.p*loX)/objective.q)+2;
+   }
+  }
+  if(hiX===null||hiY===null||!Number.isFinite(loX)||!Number.isFinite(loY))return {status:'unbounded-search'};
+  if((hiX-loX+1)*(hiY-loY+1)>400000||hiX-loX>1200||hiY-loY>1200)return {status:'large'};
+  let best=null,count=0,allPts=[];
+  for(let x=loX;x<=hiX;x++){
+   for(let y=loY;y<=hiY;y++){
+    if(!feasible(x,y,cs))continue;
+    count++;
+    if(allPts.length<400)allPts.push({x,y});
+    const val=objective.p*x+objective.q*y;
+    if(!best||(objective.dir==='max'?val>best.value+1e-8:val<best.value-1e-8)){
+     best={value:val,point:{x,y},points:[{x,y}],ties:1};
+    }else if(dAlmost(val,best.value)){
+     best.ties++;
+     if(best.points.length<6)best.points.push({x,y});
+    }
+   }
+  }
+  return best?{status:'attained',...best,count,allPts}:{status:'no-integer',count:0,allPts:[]};
+ }
+
+ function setupSelect(){
+  const sel=$('scenarioSelect');sel.innerHTML='';
+  SCENARIOS.forEach(s=>{const opt=document.createElement('option');opt.value=s.id;opt.textContent=s.title;sel.append(opt);});
+ }
+ function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+ function dataTable(){
+  const target=$('factsTable');
+  let html='<table class="data-table"><thead><tr><th>Dữ kiện ràng buộc</th><th>Mỗi đv '+esc(active.xShort||'X')+' (<span class="math">x</span>)</th><th>Mỗi đv '+esc(active.yShort||'Y')+' (<span class="math">y</span>)</th><th>Giới hạn nguồn lực</th></tr></thead><tbody>';
+  active.conditions.forEach(c=>{
+   html+=`<tr><td>${esc(c.label)}</td><td>${fnum(c.a)}</td><td>${fnum(c.b)}</td><td><span class="math-rm">${c.op} ${fnum(c.c)}</span> ${esc(c.unit||'')}</td></tr>`;
+  });
+  html+=`<tr><td><b>${active.dir==='max'?'Lợi nhuận / Giá trị':'Chi phí'} — Hàm <span class="math">F(x; y)</span></b></td><td><b>${fnum(active.p)}</b></td><td><b>${fnum(active.q)}</b></td><td><b>${esc(active.unit)} (${active.dir==='max'?'Tìm Max':'Tìm Min'})</b></td></tr></tbody></table>`;
+  target.innerHTML=html;
+ }
+
+ function updateScaffoldLocks(){
+  const revBtn=$('revealModel');
+  const rem=Math.max(0,2-progress.checkCount);
+  if(progress.modelOK){
+   revBtn.disabled=false;
+   revBtn.textContent='✓ Xem chuẩn hóa mô hình';
+  }else if(rem>0){
+   revBtn.disabled=true;
+   revBtn.textContent=`🔒 Gợi ý mô hình (${progress.checkCount}/2 lần thử)`;
+  }else{
+   revBtn.disabled=false;
+   revBtn.textContent='💡 Xem gợi ý mô hình';
+  }
+  const optBtn=$('showOptimal');
+  const canShowOpt=plotReady&&(progress.vertexCalculated>=1||progress.decisionOK||vertices.length===0);
+  optBtn.disabled=!canShowOpt;
+  if(!plotReady){
+   optBtn.textContent='🔒 Đối chiếu cực trị';
+  }else if(!canShowOpt){
+   optBtn.textContent='🔒 Tính ít nhất 1 đỉnh để mở';
+  }else{
+   optBtn.textContent=showOpt?'Ẩn cực trị trên đồ thị':'★ Đối chiếu cực trị';
+  }
+ }
+
+ function resetScene(id){
+  active=clone(SCENARIOS.find(s=>s.id===id)||SCENARIOS[0]);
+  inputs=[];plotReady=false;modelVerified=false;showOpt=false;chosenPoint=null;graphView=null;currentLP=null;vertices=[];vertexChecks={};experimentsChanged=false;
+  progress={checkCount:0,reveal:false,modelOK:false,vertexCalculated:0,decisionOK:false};
+  $('scenarioSelect').value=active.id;
+  $('storyTitle').textContent=active.title;
+  $('storyText').textContent=active.story;
+  $('storySource').textContent=active.source;
+  $('contextBadge').textContent=active.badge;
+  $('varXMeaning').textContent=active.xMeaning;
+  $('varYMeaning').textContent=active.yMeaning;
+  $('unitLabel').textContent=active.unit;
+  $('studentX').value='';$('studentY').value='';$('studentP').value='';$('studentQ').value='';
+  $('studentDir').value=active.dir;$('nonnegative').checked=true;
+  $('decisionX').value='';$('decisionY').value='';$('reflection').value='';
+  $('modelResult').textContent='';$('modelResult').className='model-result';
+  $('decisionFeedback').textContent='';$('decisionFeedback').className='model-result';
+  $('pointAuditBox').classList.add('invisible');
+  $('showLattice').checked=Boolean(active.integer);
+  $('levelSlider').value=0;
+  $('solveStatus').textContent='Hãy tự lập hệ bất phương trình ở Bước 2 rồi nhấn “Vẽ miền nghiệm của em”.';
+  $('solveStatus').className='statusbar';
+  $('intResult').textContent='';
+  dataTable();
+  active.conditions.forEach(c=>inputs.push({label:c.label,a:'',b:'',op:'≤',c:''}));
+  renderConstraintRows();
+  updateSGKPreview();
+  chatInit();
+  solveUI();
+  syncSteps();
+  updateScaffoldLocks();
+  requestAnimationFrame(resizeCanvas);
+ }
+
+ function renderConstraintRows(){
+  const box=$('constraintRows');box.innerHTML='';
+  inputs.forEach((r,i)=>{
+   const div=document.createElement('div');
+   div.className='eq-row';div.dataset.i=i;
+   div.innerHTML=`<span class="lbl">${esc(r.label)}</span><input class="control compact" data-key="a" type="text" inputmode="decimal" placeholder="a" value="${esc(r.a)}" aria-label="Hệ số x dòng ${i+1}"><span style="font-weight:bold;text-align:center">x+</span><input class="control compact" type="text" inputmode="decimal" data-key="b" placeholder="b" value="${esc(r.b)}" aria-label="Hệ số y dòng ${i+1}"><select class="op" data-key="op" aria-label="Dấu dòng ${i+1}"><option value="≤" ${r.op==='≤'?'selected':''}>≤</option><option value="≥" ${r.op==='≥'?'selected':''}>≥</option></select><input class="control compact" type="text" inputmode="decimal" data-key="c" placeholder="c" value="${esc(r.c)}" aria-label="Giới hạn dòng ${i+1}"><button class="rem" data-i="${i}" title="Xóa điều kiện" aria-label="Xóa điều kiện ${i+1}">×</button>`;
+   box.append(div);
+  });
+ }
+
+ function inputConstraints(){
+  return inputs.map(r=>({label:r.label,a:numeric(r.a),b:numeric(r.b),op:r.op,c:numeric(r.c)}));
+ }
+ function currentModel(){
+  const p=numeric($('studentP').value),q=numeric($('studentQ').value),dir=$('studentDir').value;
+  const rawCs=inputConstraints();
+  const hasNonNeg=$('nonnegative').checked;
+  const valid=Number.isFinite(p)&&Number.isFinite(q)&&(Math.abs(p)>1e-11||Math.abs(q)>1e-11)&&rawCs.length>0&&rawCs.every(valuesValid);
+  return {valid,rawCs,hasNonNeg,cs:withNonNeg(rawCs,hasNonNeg),objective:{p,q,dir}};
+ }
+ // Kiểm tra hai bất phương trình ax + by <= c có tương đương toán học (nhân với số dương k > 0) hay bị ngược chiều
+ function compareInequalities(studentRow,expectedRow){
+  if(!valuesValid(studentRow))return {match:false,reason:'invalid'};
+  const s=norm(studentRow),e=norm(expectedRow);
+  const sMax=Math.max(Math.abs(s.a),Math.abs(s.b),Math.abs(s.c));
+  const eMax=Math.max(Math.abs(e.a),Math.abs(e.b),Math.abs(e.c));
+  if(sMax<1e-12||eMax<1e-12)return {match:false,reason:'zero'};
+  const sa=[s.a/sMax,s.b/sMax,s.c/sMax],ea=[e.a/eMax,e.b/eMax,e.c/eMax];
+  if(sa.every((v,i)=>dAlmost(v,ea[i])))return {match:true};
+  if(sa.every((v,i)=>dAlmost(v,-ea[i])))return {match:false,reason:'reversed_sign'};
+  if(dAlmost(Math.abs(s.b/sMax),Math.abs(e.a/eMax))&&dAlmost(Math.abs(s.a/sMax),Math.abs(e.b/eMax))&&!dAlmost(Math.abs(e.a),Math.abs(e.b))){
+   return {match:false,reason:'swapped_xy'};
+  }
+  return {match:false,reason:'mismatch'};
+ }
+
+ function verifyModel(){
+  progress.checkCount++;
+  const model=currentModel();
+  const issues=[];
+  if(!$('studentX').value.trim()||!$('studentY').value.trim()){
+   issues.push('Em chưa ghi rõ định nghĩa hai biến x và y (cần nêu đại lượng và đơn vị).');
+  }
+  if(!model.hasNonNeg){
+   issues.push('Trong bài toán thực tế này, số lượng x và y không thể âm (cần tích chọn x ≥ 0, y ≥ 0).');
+  }
+  if(!Number.isFinite(model.objective.p)||!Number.isFinite(model.objective.q)){
+   issues.push('Hàm mục tiêu F(x; y) chưa được điền đủ hệ số p và q.');
+  }else{
+   if(model.objective.dir!==active.dir){
+    issues.push(`Hướng tối ưu chưa đúng: Đề bài yêu cầu tìm ${active.dir==='max'?'giá trị lớn nhất (Max)':'giá trị nhỏ nhất (Min)'}.`);
+   }
+   if(!dAlmost(model.objective.p,active.p)||!dAlmost(model.objective.q,active.q)){
+    if(dAlmost(model.objective.p,active.q)&&dAlmost(model.objective.q,active.p)){
+     issues.push('Hệ số hàm mục tiêu F(x; y) đang bị hoán đổi giữa biến x và biến y.');
+    }else{
+     issues.push(`Hệ số hàm mục tiêu F = ${fnum(model.objective.p)}x + ${fnum(model.objective.q)}y chưa khớp với đơn giá/lợi nhuận trong bảng dữ kiện.`);
+    }
+   }
+  }
+  const u=model.rawCs;
+  if(!u.length||!u.every(valuesValid)){
+   issues.push('Có dòng bất phương trình còn bỏ trống hoặc cả hai hệ số a, b đều bằng 0.');
+  }else{
+   const remaining=[...u];
+   for(const expected of active.conditions){
+    const idx=remaining.findIndex(st=>compareInequalities(st,expected).match);
+    if(idx>=0){
+     remaining.splice(idx,1);
+    }else{
+     const rev=u.find(st=>compareInequalities(st,expected).reason==='reversed_sign');
+     const swap=u.find(st=>compareInequalities(st,expected).reason==='swapped_xy');
+     if(rev){
+      issues.push(`Dữ kiện “${expected.label}”: Em lập đúng hệ số nhưng bị ngược dấu bất đẳng thức (hãy xem kĩ cụm từ “tối đa/không quá” hay “ít nhất/tối thiểu”).`);
+     }else if(swap){
+      issues.push(`Dữ kiện “${expected.label}”: Em đang nhầm lẫn hệ số của x sang y và ngược lại.`);
+     }else{
+      issues.push(`Chưa có bất phương trình nào biểu diễn đúng dữ kiện “${expected.label}”.`);
+     }
+    }
+   }
+   if(remaining.length){
+    issues.push(`Có ${remaining.length} bất phương trình dư hoặc chưa khớp với dữ kiện bài toán.`);
+   }
+  }
+  modelVerified=issues.length===0;
+  progress.modelOK=modelVerified;
+  const box=$('modelResult');
+  box.className='model-result '+(modelVerified?'ok':'bad');
+  if(modelVerified){
+   box.textContent='✓ Mô hình toán học hoàn toàn chính xác!\n• Bây giờ em hãy quan sát miền đa giác nghiệm trên đồ thị.\n• Nhiệm vụ tiếp theo: Tự tính giá trị F(x; y) tại các đỉnh trong Bảng ④ để tìm ra đỉnh cực trị.';
+   renderPlot(false);
+   chatReply('Tuyệt vời! Mô hình của em đã chính xác. Em hãy nhìn vào Bảng ④: các đỉnh A, B, C... là giao điểm của những đường thẳng nào? Hãy tự tính F(x; y) tại từng đỉnh nhé!');
+  }else{
+   box.textContent='Phản hồi Sư phạm (Hãy điều chỉnh lại):\n• '+issues.join('\n• ');
+  }
+  updateScaffoldLocks();
+  syncSteps();
+ }
+
+ function showReference(){
+  if(progress.checkCount<2&&!progress.modelOK){
+   $('modelResult').className='model-result bad';
+   $('modelResult').textContent='Hãy tự mình thử lập mô hình và nhấn “Kiểm tra mô hình” ít nhất 2 lần để rèn tư duy trước khi mở gợi ý!';
+   return;
+  }
+  progress.reveal=true;
+  $('studentX').value=active.xMeaning;
+  $('studentY').value=active.yMeaning;
+  $('studentP').value=active.p;
+  $('studentQ').value=active.q;
+  $('studentDir').value=active.dir;
+  $('nonnegative').checked=true;
+  inputs=active.conditions.map(c=>({label:c.label,a:String(c.a),b:String(c.b),op:c.op,c:String(c.c)}));
+  renderConstraintRows();
+  modelVerified=true;
+  progress.modelOK=true;
+  const txt='Đã điền mô hình chuẩn hóa:\n• Hàm mục tiêu: F(x; y) = '+fnum(active.p)+'x + '+fnum(active.q)+'y ('+active.unit+') → Tìm '+(active.dir==='max'?'GTLN (Max)':'GTNN (Min)')+'.\n• Hệ ràng buộc: '+active.conditions.map(c=>fnum(c.a)+'x + '+fnum(c.b)+'y '+c.op+' '+fnum(c.c)).join('; ')+'; kèm x ≥ 0, y ≥ 0.\n• Lưu ý: Em vẫn cần tự tính giá trị F tại các đỉnh ở Bảng ④ để mở khóa cực trị!';
+  $('modelResult').className='model-result ok';
+  $('modelResult').textContent=txt;
+  updateSGKPreview();
+  renderPlot(false);
+  updateScaffoldLocks();
+  syncSteps();
+ }
+
+ function renderPlot(keepShowOpt){
+  const model=currentModel();
+  if(!model.valid){
+   $('modelResult').textContent='Cần nhập đầy đủ hàm mục tiêu (p, q không đồng thời bằng 0) và các hệ số a, b, c hợp lệ của hệ bất phương trình trước khi vẽ.';
+   $('modelResult').className='model-result bad';
+   return;
+  }
+  currentLP=model;
+  plotReady=true;
+  showOpt=Boolean(keepShowOpt&&showOpt);
+  vertices=intersections(currentLP.cs);
+  const opt=optimalLP(currentLP.cs,currentLP.objective);
+  const mx=optimalLP(currentLP.cs,{p:1,q:0,dir:'max'}),my=optimalLP(currentLP.cs,{p:0,q:1,dir:'max'});
+  let base=active.viewMax||12;
+  let xMax=mx.status==='attained'?Math.max(2,mx.value):base;
+  let yMax=my.status==='attained'?Math.max(2,my.value):base;
+  const maxCandX=Math.max(3,...vertices.map(p=>Math.abs(p.x)));
+  const maxCandY=Math.max(3,...vertices.map(p=>Math.abs(p.y)));
+  if(mx.status!=='attained')xMax=Math.max(maxCandX*1.35,base);
+  if(my.status!=='attained')yMax=Math.max(maxCandY*1.35,base);
+  xMax=Math.max(xMax,base*.45);yMax=Math.max(yMax,base*.45);
+  if(!graphView){
+   graphView={cx:xMax*.46,cy:yMax*.46,spanX:Math.max(3,Math.min(500000,xMax*1.38)),spanY:Math.max(3,Math.min(500000,yMax*1.38))};
+  }
+  $('graphOverlay').classList.add('invisible');
+  if(opt.status==='attained')level=Number((opt.value*0.6).toPrecision(5));
+  else if(vertices.length){
+   const firstV=vertices[0];
+   level=currentLP.objective.p*firstV.x+currentLP.objective.q*firstV.y;
+  }else level=0;
+  syncSlider();
+  solveUI();
+  updateScaffoldLocks();
+  resizeCanvas();
+  syncSteps();
+ }
+
+ function fitPlot(){graphView=null;renderPlot(showOpt);}
+
+ function dataChange(ratio){
+  if(!modelVerified){
+   $('solveStatus').textContent='Hãy kiểm tra mô hình đúng ở Bước ② trước khi thực hiện thí nghiệm thay đổi nguồn lực.';
+   $('solveStatus').className='statusbar error';
+   return;
+  }
+  const c=active.conditions[0];if(!c)return;
+  const old=c.c;
+  c.c=Math.max(0,Number((old*ratio).toPrecision(8)));
+  if(inputs[0])inputs[0].c=String(c.c);
+  renderConstraintRows();
+  experimentsChanged=true;
+  vertexChecks={};
+  graphView=null;
+  renderPlot(showOpt);
+  dataTable();
+  $('solveStatus').className='statusbar';
+  $('solveStatus').textContent=`Thí nghiệm độ nhạy: Đã đổi giới hạn "${c.label}" từ ${fnum(old)} thành ${fnum(c.c)}. Hãy quan sát các đỉnh dịch chuyển và tính lại F(x; y)!`;
+ }
+
+ function resetExperiment(){
+  const original=SCENARIOS.find(s=>s.id===active.id);
+  if(!original||!modelVerified)return;
+  active.conditions=clone(original.conditions);
+  inputs=active.conditions.map(c=>({label:c.label,a:String(c.a),b:String(c.b),op:c.op,c:String(c.c)}));
+  renderConstraintRows();
+  experimentsChanged=false;
+  vertexChecks={};
+  graphView=null;
+  renderPlot(showOpt);
+  dataTable();
+ }
+
+ function verifyStudentVertexCalc(vKey,expectedVal,rawInput){
+  const val=numeric(rawInput);
+  if(!Number.isFinite(val))return;
+  const ok=dAlmost(val,expectedVal);
+  vertexChecks[vKey]={input:rawInput,ok};
+  if(ok)progress.vertexCalculated=Object.values(vertexChecks).filter(x=>x.ok).length;
+  updateScaffoldLocks();
+  solveUI();
+ }
+
+ function solveUI(){
+  const badge=$('solveBadge');
+  if(!plotReady||!currentLP){
+   badge.textContent='Chưa phân tích';
+   for(const id of ['bestValue','bestPoint','solutionType'])$(id).textContent='—';
+   $('vertexBody').innerHTML='<tr><td colspan="4" style="text-align:center">Chưa có dữ liệu đỉnh</td></tr>';
+   $('intResult').textContent='';
+   $('graphOverlay').classList.remove('invisible');
+   return;
+  }
+  const r=optimalLP(currentLP.cs,currentLP.objective);
+  const bounded=isRegionBounded(currentLP.cs);
+  const regionLabel=bounded?'Miền đa giác bị chặn':'Miền không bị chặn';
+  const correctCheck=modelVerified?'[Mô hình đúng] ':'[Mô hình tự nhập – chưa đối chiếu đề] ';
+
+  if(r.status==='empty'){
+   $('bestValue').textContent='Vô nghiệm';
+   $('bestPoint').textContent='∅ (Miền rỗng)';
+   $('solutionType').textContent='Các ràng buộc mâu thuẫn';
+   $('solveStatus').className='statusbar error';
+   $('solveStatus').textContent=correctCheck+'Hệ bất phương trình hiện tại không có điểm chung nào (miền chấp nhận được rỗng). Hãy kiểm tra lại chiều các dấu ≤, ≥.';
+  }else if(r.status==='unbounded'){
+   $('bestValue').textContent=currentLP.objective.dir==='max'?'+∞ (Không bị chặn trên)':'−∞ (Không bị chặn dưới)';
+   $('bestPoint').textContent='Không tồn tại đỉnh tối ưu';
+   $('solutionType').textContent=regionLabel+' • Không có cực trị';
+   $('solveStatus').className='statusbar error';
+   $('solveStatus').textContent=correctCheck+`Miền chấp nhận được không bị chặn về phía làm ${currentLP.objective.dir==='max'?'tăng':'giảm'} F(x; y), nên hàm mục tiêu không đạt giá trị ${currentLP.objective.dir==='max'?'lớn nhất':'nhỏ nhất'} hữu hạn.`;
+  }else if(r.status==='attained'){
+   $('bestValue').innerHTML=showOpt?`${fmath(r.value,true)} <small>${esc(active.unit)}</small>`:'🔒 Tự tính ở bảng dưới';
+   if(showOpt){
+    if(r.face?.type==='segment'){
+     $('bestPoint').innerHTML=`Đoạn nối (${fmath(r.face.a.x,false)}; ${fmath(r.face.a.y,false)}) và (${fmath(r.face.b.x,false)}; ${fmath(r.face.b.y,false)})`;
+    }else{
+     $('bestPoint').innerHTML=`(${fmath(r.point.x,false)}; ${fmath(r.point.y,false)})`;
+    }
+   }else{
+    $('bestPoint').textContent='🔒 Hãy dự đoán đỉnh';
+   }
+   const optKind=r.face?.type==='segment'?'Vô số nghiệm trên cạnh':r.face?.type==='all'?'Mọi điểm khả thi':r.face?.type==='ray'||r.face?.type==='line'?'Vô số nghiệm trên tia':'Đạt tại đỉnh duy nhất';
+   $('solutionType').textContent=`${regionLabel} • ${optKind}`;
+   $('solveStatus').className='statusbar';
+   $('solveStatus').textContent=correctCheck+(showOpt?(r.face?.type==='segment'?'Đường mức F = k trùng phương với một đường biên ràng buộc, nên mọi điểm trên đoạn thẳng nối hai đỉnh tối ưu đều đạt cực trị!':'Đã mở đối chiếu cực trị! Hãy kiểm tra xem đỉnh tối ưu sử dụng hết những nguồn lực nào.'):'Hãy tự thay tọa độ (x; y) của từng đỉnh vào F(x; y) = px + qy trong bảng dưới đây để khám phá đỉnh tối ưu.');
+  }
+
+  badge.textContent=showOpt?'Đã mở đối chiếu':'Tự tính tại đỉnh';
+  const ordered=[...vertices].sort((a,b)=>a.x-b.x||a.y-b.y);
+  $('vertexBody').innerHTML='';
+  ordered.forEach((v,i)=>{
+   const name=String.fromCharCode(65+i);
+   const vKey=`${name}_${v.x.toFixed(4)}_${v.y.toFixed(4)}`;
+   const F=currentLP.objective.p*v.x+currentLP.objective.q*v.y;
+   const isBest=showOpt&&r.status==='attained'&&dAlmost(F,r.value);
+   const st=vertexChecks[vKey];
+   const tr=document.createElement('tr');
+   if(isBest)tr.className='best';
+   const lineInfo=v.lines?v.lines.slice(0,2).join(' ∩ '):'';
+   let cellHtml='';
+   if(showOpt){
+    cellHtml=`<strong>${fmath(F,true)}</strong> ${st?.ok?'<span style="color:#0d7a5f">✓</span>':''}`;
+   }else{
+    const cls=st?(st.ok?'v-input correct':'v-input wrong'):'v-input';
+    const badgeMark=st?(st.ok?'✓ Đúng':'✕ Sai'):'Kiểm tra';
+    cellHtml=`<div class="v-calc" onclick="event.stopPropagation()"><input type="text" class="${cls}" data-vkey="${vKey}" data-expected="${F}" placeholder="Nhập F(${name})" value="${esc(st?.input||'')}"><button class="v-btn" data-vbtn="${vKey}">${badgeMark}</button></div>`;
+   }
+   tr.innerHTML=`<td><b><span class="math">${name}</span></b>${isBest?' ★':''}<br><small style="color:#698092;font-size:10px">${esc(lineInfo)}</small></td><td>${fmath(v.x,true)}</td><td>${fmath(v.y,true)}</td><td>${cellHtml}</td>`;
+   tr.title='Nhấn vào hàng để thử chọn đỉnh '+name+' trên đồ thị và kiểm tra mức tiêu hao nguồn lực';
+   tr.style.cursor='pointer';
+   tr.addEventListener('click',()=>selectPoint(v,name));
+   $('vertexBody').append(tr);
+  });
+  if(!ordered.length){
+   $('vertexBody').innerHTML='<tr><td colspan="4" style="text-align:center">Miền hiện tại không có đỉnh hữu hạn.</td></tr>';
+  }
+  // Gắn sự kiện cho các ô học sinh tự tính F(A), F(B)...
+  $('vertexBody').querySelectorAll('[data-vbtn]').forEach(btn=>{
+   btn.addEventListener('click',()=>{
+    const key=btn.dataset.vbtn;
+    const inp=$('vertexBody').querySelector(`input[data-vkey="${key}"]`);
+    if(inp)verifyStudentVertexCalc(key,Number(inp.dataset.expected),inp.value);
+   });
+  });
+  $('vertexBody').querySelectorAll('input[data-vkey]').forEach(inp=>{
+   inp.addEventListener('keydown',e=>{
+    if(e.key==='Enter')verifyStudentVertexCalc(inp.dataset.vkey,Number(inp.dataset.expected),inp.value);
+   });
+  });
+
+  const note=$('intResult');
+  if(active.integer){
+   const ir=integerLP(currentLP.cs,currentLP.objective);
+   if(ir.status==='attained'){
+    const ptsStr=ir.points.map(pt=>`(${pt.x}; ${pt.y})`).join(', ');
+    note.textContent=showOpt?`⚖ PHÂN TÍCH NGHIỆM NGUYÊN (x, y ∈ ℤ): Có ${ir.count} điểm nguyên trong miền chấp nhận được. Giá trị tối ưu nguyên là F = ${fnum(ir.value)} ${active.unit} đạt tại ${ptsStr}.`:`⚖ LƯU Ý THỰC TIỄN: Đại lượng x, y trong bài toán này phải là số nguyên! Sau khi tìm đỉnh liên tục, em hãy bật “Lưới điểm nguyên” trên đồ thị để tìm điểm nguyên (x; y) ∈ ℤ² tốt nhất.`;
+   }else if(ir.status==='no-integer'){
+    note.textContent='⚖ CẢNH BÁO: Tuy miền chấp nhận được liên tục khác rỗng nhưng KHÔNG chứa bất kì điểm nguyên (x; y) ∈ ℤ² nào!';
+   }else{
+    note.textContent='⚖ Bài toán yêu cầu nghiệm nguyên (x, y ∈ ℤ). Hãy kiểm tra tính nguyên của phương án trước khi kết luận.';
+   }
+  }else{
+   note.textContent='Mô hình liên tục: Các đại lượng x và y có thể nhận giá trị thực không âm (kể cả phân số/số thập phân).';
+  }
+  refreshGraph();
+ }
+
+ // Hiển thị bảng kiểm toán nguồn lực (ràng buộc chặt vs. dư thừa) cho điểm M(x; y) đang chọn
+ function renderPointAudit(pt,labelName='M'){
+  const box=$('pointAuditBox');
+  if(!pt||!currentLP){box.classList.add('invisible');return;}
+  box.classList.remove('invisible');
+  const obj=currentLP.objective;
+  const F=obj.p*pt.x+obj.q*pt.y;
+  let html=`<h4>🔍 Kiểm chứng điểm <span class="math">${esc(labelName)}</span>(${fmath(pt.x,false)}; ${fmath(pt.y,false)}) → Giá trị <span class="math">F</span> = ${fmath(F,true)} ${esc(active.unit)}</h4>`;
+  currentLP.rawCs.forEach((c,idx)=>{
+   const lhs=c.a*pt.x+c.b*pt.y;
+   const diff=Math.abs(lhs-c.c);
+   const tol=1e-6*Math.max(1,Math.abs(lhs),Math.abs(c.c));
+   const ok=c.op==='≤'?lhs<=c.c+tol:lhs>=c.c-tol;
+   const tight=diff<=tol;
+   let statusTxt='';
+   if(!ok){
+    statusTxt=`<span class="audit-fail">✕ Vi phạm (${c.op==='≤'?'Vượt quá':'Thiếu hụt'} ${fnum(diff)})</span>`;
+   }else if(tight){
+    statusTxt=`<span class="audit-pass">✓ Ràng buộc chặt (Vừa hết/đủ 100%)</span>`;
+   }else{
+    statusTxt=`<span class="audit-pass">✓ Thỏa mãn (${c.op==='≤'?'Còn dư':'Vượt mức tối thiểu'} ${fnum(diff)})</span>`;
+   }
+   html+=`<div class="audit-row"><span>${esc(c.label||('ĐK '+(idx+1)))}: ${formatLinearExpr(c.a,c.b,true)} = <b>${fmath(lhs,false)}</b> (so với <span class="math-rm">${c.op} ${fnum(c.c)}</span>)</span>${statusTxt}</div>`;
+  });
+  box.innerHTML=html;
+ }
+
+ function selectPoint(pt,labelName='M'){
+  chosenPoint={x:pt.x,y:pt.y,name:labelName};
+  $('decisionX').value=String(Math.round(pt.x*10000)/10000);
+  $('decisionY').value=String(Math.round(pt.y*10000)/10000);
+  const obj=currentLP?.objective;
+  if(obj){
+   const F=obj.p*pt.x+obj.q*pt.y;
+   level=F;
+   syncSlider();
+   $('decisionFeedback').className='model-result';
+   $('decisionFeedback').textContent=`Em đang chọn khảo sát điểm ${labelName}(${fnum(pt.x,true)}; ${fnum(pt.y,true)}) có F = ${fnum(F,true)} ${active.unit}. Hãy xem chi tiết tiêu hao nguồn lực ở khung Kiểm chứng phía trên hoặc nhấn “Thẩm định phương án”.`;
+  }
+  renderPointAudit(pt,labelName);
+  refreshGraph();
+ }
+
+ function checkDecision(){
+  const x=numeric($('decisionX').value),y=numeric($('decisionY').value);
+  const box=$('decisionFeedback');
+  if(!Number.isFinite(x)||!Number.isFinite(y)){
+   box.textContent='Hãy nhập đầy đủ hai giá trị số cho phương án x và y (có thể nhập phân số như 10/3).';
+   box.className='model-result bad';
+   return;
+  }
+  const cs=withNonNeg(active.conditions,true),obj={p:active.p,q:active.q,dir:active.dir},F=obj.p*x+obj.q*y;
+  const ok=feasible(x,y,cs);
+  const integerOk=!active.integer||(dAlmost(x,Math.round(x))&&dAlmost(y,Math.round(y)));
+  const ref=active.integer?integerLP(cs,obj):optimalLP(cs,obj);
+  const optimal=ref.status==='attained'&&ok&&integerOk&&dAlmost(F,ref.value);
+  box.className='model-result '+(optimal?'ok':'bad');
+
+  if(!ok){
+   const violated=cs.filter(e=>!feasible(x,y,[e])).map(e=>e.label);
+   box.textContent=`✕ Phương án (${fnum(x,true)}; ${fnum(y,true)}) KHÔNG thuộc miền chấp nhận được vì vi phạm điều kiện: ${violated.join(', ')}. Em hãy kiểm tra lại khung tiêu hao nguồn lực!`;
+  }else if(!integerOk){
+   const contRef=optimalLP(cs,obj);
+   const isContOpt=contRef.status==='attained'&&dAlmost(F,contRef.value);
+   box.textContent=`✕ Phát hiện bẫy thực tiễn! Điểm (${fnum(x,true)}; ${fnum(y,true)}) ${isContOpt?'đúng là đỉnh tối ưu của mô hình liên tục, nhưng ':'thuộc miền đa giác, nhưng '}trong thực tế "${active.xMeaning}" và "${active.yMeaning}" phải là SỐ NGUYÊN. Em hãy bật “Lưới điểm nguyên” trên đồ thị để tìm điểm nguyên (x; y) ∈ ℤ² tốt nhất!`;
+  }else if(ref.status==='attained'){
+   if(optimal){
+    box.textContent=`✓ CHÍNH XÁC & TỐI ƯU! Phương án (${fnum(x,true)}; ${fnum(y,true)}) hoàn toàn khả thi và đạt giá trị ${active.dir==='max'?'lớn nhất':'nhỏ nhất'} F = ${fnum(F,true)} ${active.unit}. Hãy viết lập luận của em vào ô báo cáo bên dưới!`;
+   }else{
+    const betterDir=active.dir==='max'?'lớn hơn':'nhỏ hơn';
+    box.textContent=`✓ Phương án (${fnum(x,true)}; ${fnum(y,true)}) chấp nhận được (thỏa mãn mọi điều kiện) và cho F = ${fnum(F,true)} ${active.unit}, NHƯNG CHƯA TỐI ƯU. Vẫn còn phương án trong miền nghiệm cho giá trị F ${betterDir}! Em hãy dịch chuyển đường mức F = k theo hướng ${active.dir==='max'?'cùng chiều':'ngược chiều'} vectơ ∇F để tìm đỉnh tốt hơn.`;
+   }
+  }else{
+   box.textContent=`✓ Phương án (${fnum(x,true)}; ${fnum(y,true)}) khả thi với F = ${fnum(F,true)} ${active.unit}. Tuy nhiên bài toán này không có cực trị hữu hạn theo hướng đã chọn.`;
+  }
+  progress.decisionOK=optimal;
+  chosenPoint={x,y,name:'M'};
+  if(plotReady)renderPointAudit(chosenPoint,'M');
+  if(optimal)showOpt=true;
+  updateScaffoldLocks();
+  solveUI();
+  syncSteps();
+ }
+
+ function syncSteps(){
+  document.querySelectorAll('.step').forEach((node,i)=>{
+   node.classList.remove('active','done');
+   if(i===0)node.classList.add('done');
+   if(i===1&&progress.modelOK)node.classList.add('done');
+   if(i===2&&plotReady&&progress.vertexCalculated>=1)node.classList.add('done');
+   if(i===3&&progress.decisionOK)node.classList.add('done');
+   const cur=!progress.modelOK?1:(!plotReady||progress.vertexCalculated<1)?2:3;
+   if(i===cur)node.classList.add('active');
+  });
+ }
+
+ function chartBounds(){
+  const cv=$('graph');
+  const w=cv.clientWidth||700,h=cv.clientHeight||450;
+  const pad={l:56,r:22,t:22,b:42};
+  const innerW=w-pad.l-pad.r,innerH=h-pad.t-pad.b;
+  const v=graphView||{cx:5,cy:5,spanX:12,spanY:12};
+  const scale=Math.min(innerW/v.spanX,innerH/v.spanY);
+  const viewW=innerW/scale,viewH=innerH/scale;
+  return {
+   w,h,pad,scale,
+   rect:{xmin:v.cx-viewW/2,xmax:v.cx+viewW/2,ymin:v.cy-viewH/2,ymax:v.cy+viewH/2},
+   map:pt=>({x:pad.l+(pt.x-(v.cx-viewW/2))*scale,y:pad.t+(v.cy+viewH/2-pt.y)*scale}),
+   unmap:pt=>({x:v.cx-viewW/2+(pt.x-pad.l)/scale,y:v.cy+viewH/2-(pt.y-pad.t)/scale})
+  };
+ }
+ function niceStep(n){
+  const k=Math.pow(10,Math.floor(Math.log10(Math.max(1e-10,n))));
+  const t=n/k;
+  return (t<=1?1:t<=2?2:t<=5?5:10)*k;
+ }
+ function clip(poly,ineq){
+  const {a,b,c}=ineq;
+  if(!poly.length)return [];
+  const ans=[];
+  for(let i=0;i<poly.length;i++){
+   const P=poly[i],Q=poly[(i+1)%poly.length];
+   const f=a*P.x+b*P.y-c,g=a*Q.x+b*Q.y-c;
+   const left=f<=1e-9,right=g<=1e-9;
+   if(left)ans.push(P);
+   if(left!==right){
+    const t=f/(f-g);
+    ans.push({x:P.x+t*(Q.x-P.x),y:P.y+t*(Q.y-P.y)});
+   }
+  }
+  return ans;
+ }
+ function drawStrokeLine(ctx,c,B,color,width=2.1,dashed=false,label=''){
+  if(Math.abs(c.a)<1e-10&&Math.abs(c.b)<1e-10)return;
+  const {xmin,xmax,ymin,ymax}=B.rect;
+  const candidates=[];
+  const add=(x,y)=>{
+   if(x>=xmin-1e-7&&x<=xmax+1e-7&&y>=ymin-1e-7&&y<=ymax+1e-7&&!candidates.some(pt=>Math.hypot(pt.x-x,pt.y-y)<1e-6)){
+    candidates.push({x,y});
+   }
+  };
+  if(Math.abs(c.b)>1e-12){add(xmin,(c.c-c.a*xmin)/c.b);add(xmax,(c.c-c.a*xmax)/c.b);}
+  if(Math.abs(c.a)>1e-12){add((c.c-c.b*ymin)/c.a,ymin);add((c.c-c.b*ymax)/c.a,ymax);}
+  if(candidates.length<2)return;
+  const p=B.map(candidates[0]),q=B.map(candidates[1]);
+  ctx.save();
+  ctx.strokeStyle=color;ctx.lineWidth=width;ctx.setLineDash(dashed?[7,6]:[]);
+  ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();
+  if(label&&Math.hypot(q.x-p.x,q.y-p.y)>70){
+   const mx=p.x*0.35+q.x*0.65,my=p.y*0.35+q.y*0.65;
+   ctx.setLineDash([]);
+   ctx.font='bold 10.5px system-ui, sans-serif';
+   const tw=ctx.measureText(label).width;
+   ctx.fillStyle='rgba(255,255,255,0.88)';
+   ctx.fillRect(mx-tw/2-4,my-9,tw+8,15);
+   ctx.fillStyle=color;
+   ctx.textAlign='center';
+   ctx.fillText(label,mx,my+2);
+  }
+  ctx.restore();
+ }
+
+ function drawGraph(){
+  const cv=$('graph');const ctx=cv.getContext('2d');if(!ctx)return;
+  const B=chartBounds(),{w,h,pad}=B;
+  ctx.clearRect(0,0,w,h);
+  ctx.fillStyle='#fff';ctx.fillRect(0,0,w,h);
+  const {xmin,xmax,ymin,ymax}=B.rect;
+  ctx.save();
+  ctx.beginPath();ctx.rect(pad.l,pad.t,w-pad.l-pad.r,h-pad.t-pad.b);ctx.clip();
+  ctx.fillStyle='#fff8f6';ctx.fillRect(pad.l,pad.t,w-pad.l-pad.r,h-pad.t-pad.b);
+
+  if($('showGrid').checked){
+   const step=niceStep(Math.max(xmax-xmin,ymax-ymin)/9);
+   ctx.strokeStyle='#e6edf2';ctx.lineWidth=1;
+   for(let x=Math.ceil(xmin/step)*step;x<xmax;x+=step){
+    const s=B.map({x,y:0});ctx.beginPath();ctx.moveTo(s.x,pad.t);ctx.lineTo(s.x,h-pad.b);ctx.stroke();
+   }
+   for(let y=Math.ceil(ymin/step)*step;y<ymax;y+=step){
+    const s=B.map({x:0,y});ctx.beginPath();ctx.moveTo(pad.l,s.y);ctx.lineTo(w-pad.r,s.y);ctx.stroke();
+   }
+  }
+
+  if(plotReady&&currentLP){
+   let poly=[{x:xmin,y:ymin},{x:xmax,y:ymin},{x:xmax,y:ymax},{x:xmin,y:ymax}];
+   for(const c of lc(currentLP.cs))poly=clip(poly,c);
+   if(poly.length>=3){
+    ctx.fillStyle='rgba(25,175,146,.24)';
+    ctx.strokeStyle='rgba(12,151,133,.85)';
+    ctx.lineWidth=1.2;
+    ctx.beginPath();
+    poly.forEach((p,i)=>{const s=B.map(p);i?ctx.lineTo(s.x,s.y):ctx.moveTo(s.x,s.y);});
+    ctx.closePath();ctx.fill();ctx.stroke();
+   }
+   // Vẽ lưới điểm nguyên (x; y) ∈ Z^2 thuộc miền nghiệm
+   if($('showLattice').checked){
+    const lx0=Math.max(Math.ceil(xmin),-100),lx1=Math.min(Math.floor(xmax),200);
+    const ly0=Math.max(Math.ceil(ymin),-100),ly1=Math.min(Math.floor(ymax),200);
+    if((lx1-lx0+1)*(ly1-ly0+1)<=2500){
+     ctx.fillStyle='#d97706';
+     for(let ix=lx0;ix<=lx1;ix++){
+      for(let iy=ly0;iy<=ly1;iy++){
+       if(feasible(ix,iy,currentLP.cs)){
+        const sp=B.map({x:ix,y:iy});
+        ctx.beginPath();ctx.arc(sp.x,sp.y,3.1,0,Math.PI*2);ctx.fill();
+       }
+      }
+     }
+    }
+   }
+   // Vẽ các đường thẳng biên kèm nhãn
+   currentLP.rawCs.forEach((c,i)=>{
+    const eqText=`${fnum(c.a)}x + ${fnum(c.b)}y = ${fnum(c.c)}`;
+    drawStrokeLine(ctx,c,B,CLRS[i%CLRS.length],2.3,false,c.label?`${c.label} (${eqText})`:eqText);
+   });
+   // Vẽ đường mức F(x; y) = k và vectơ pháp tuyến (gradient)
+   if(Number.isFinite(level)){
+    const obj=currentLP.objective;
+    drawStrokeLine(ctx,{a:obj.p,b:obj.q,c:level},B,'#7252c2',3,true,`F = ${fnum(level)}`);
+    if($('showGrad').checked&&Math.hypot(obj.p,obj.q)>1e-10){
+     const glen=Math.hypot(obj.p,obj.q);
+     const ux=obj.p/glen,uy=obj.q/glen;
+     // Tìm một điểm trên đường mức nằm gần tâm khung nhìn để đặt gốc vectơ ∇F
+     const cx=(xmin+xmax)/2,cy=(ymin+ymax)/2;
+     const dist=(obj.p*cx+obj.q*cy-level)/(glen*glen);
+     const basePt={x:cx-dist*obj.p,y:cy-dist*obj.q};
+     const s0=B.map(basePt);
+     if(s0.x>=pad.l+25&&s0.x<=w-pad.r-25&&s0.y>=pad.t+25&&s0.y<=h-pad.b-25){
+      const s1={x:s0.x+ux*38,y:s0.y-uy*38};
+      ctx.save();
+      ctx.strokeStyle='#5a36b5';ctx.fillStyle='#5a36b5';ctx.lineWidth=2.4;
+      ctx.beginPath();ctx.moveTo(s0.x,s0.y);ctx.lineTo(s1.x,s1.y);ctx.stroke();
+      const ang=Math.atan2(s1.y-s0.y,s1.x-s0.x);
+      ctx.beginPath();
+      ctx.moveTo(s1.x,s1.y);
+      ctx.lineTo(s1.x-9*Math.cos(ang-0.42),s1.y-9*Math.sin(ang-0.42));
+      ctx.lineTo(s1.x-9*Math.cos(ang+0.42),s1.y-9*Math.sin(ang+0.42));
+      ctx.closePath();ctx.fill();
+      ctx.font='bold 11px system-ui';
+      ctx.fillText('n (hướng tăng F)',s1.x+6,s1.y-4);
+      ctx.restore();
+     }
+    }
+   }
+  }
+
+  // Hệ trục tọa độ Oxy
+  const origin=B.map({x:0,y:0});
+  ctx.strokeStyle='#34465b';ctx.lineWidth=2;ctx.beginPath();
+  if(origin.y>=pad.t&&origin.y<=h-pad.b){ctx.moveTo(pad.l,origin.y);ctx.lineTo(w-pad.r,origin.y);}
+  if(origin.x>=pad.l&&origin.x<=w-pad.r){ctx.moveTo(origin.x,h-pad.b);ctx.lineTo(origin.x,pad.t);}
+  ctx.stroke();
+  ctx.restore();
+
+  ctx.strokeStyle='#c9d8e3';ctx.strokeRect(pad.l,pad.t,w-pad.l-pad.r,h-pad.t-pad.b);
+  const step=niceStep(Math.max(xmax-xmin,ymax-ymin)/9);
+  ctx.font='11px system-ui, sans-serif';ctx.fillStyle='#63798b';ctx.textAlign='center';
+  for(let x=Math.ceil(xmin/step)*step;x<=xmax;x+=step){
+   const s=B.map({x,y:0});if(s.x>=pad.l+10&&s.x<=w-pad.r-9)ctx.fillText(fnum(x),s.x,h-pad.b+17);
+  }
+  ctx.textAlign='right';
+  for(let y=Math.ceil(ymin/step)*step;y<=ymax;y+=step){
+   const s=B.map({x:0,y});if(s.y>=pad.t+7&&s.y<=h-pad.b-6)ctx.fillText(fnum(y),pad.l-7,s.y+4);
+  }
+  ctx.font='italic bold 15px Georgia,serif';ctx.fillStyle='#173c5f';
+  ctx.fillText('x',w-pad.r-3,h-pad.b+24);ctx.fillText('y',pad.l-10,pad.t+5);
+
+  if(plotReady&&currentLP){
+   if($('showVertices').checked){
+    const vs=[...vertices].sort((a,b)=>a.x-b.x||a.y-b.y);
+    vs.forEach((pt,i)=>{
+     const s=B.map(pt);
+     if(s.x<pad.l||s.x>w-pad.r||s.y<pad.t||s.y>h-pad.b)return;
+     ctx.beginPath();ctx.arc(s.x,s.y,5,0,Math.PI*2);
+     ctx.fillStyle='#fff';ctx.fill();ctx.lineWidth=2.2;ctx.strokeStyle='#158572';ctx.stroke();
+     ctx.fillStyle='#105e58';ctx.font='bold 11.5px system-ui';ctx.textAlign='left';
+     ctx.fillText(`${String.fromCharCode(65+i)}(${fcoord(pt.x)}; ${fcoord(pt.y)})`,s.x+7,s.y-8);
+    });
+   }
+   if(showOpt){
+    const opt=optimalLP(currentLP.cs,currentLP.objective);
+    if(opt.status==='attained'&&opt.point){
+     // Tô đậm đoạn thẳng tối ưu nếu bài toán có vô số nghiệm trên một cạnh
+     if(opt.face?.type==='segment'){
+      const sa=B.map(opt.face.a),sb=B.map(opt.face.b);
+      ctx.save();
+      ctx.strokeStyle='#6e42c1';ctx.lineWidth=6;ctx.lineCap='round';
+      ctx.beginPath();ctx.moveTo(sa.x,sa.y);ctx.lineTo(sb.x,sb.y);ctx.stroke();
+      ctx.restore();
+     }
+     const s=B.map(opt.point);
+     if(s.x>=pad.l&&s.x<=w-pad.r&&s.y>=pad.t&&s.y<=h-pad.b){
+      ctx.beginPath();ctx.arc(s.x,s.y,7.2,0,Math.PI*2);
+      ctx.fillStyle='#7851c0';ctx.fill();ctx.strokeStyle='white';ctx.lineWidth=2;ctx.stroke();
+      ctx.fillStyle='#57359c';ctx.font='bold 12px system-ui';ctx.textAlign='left';
+      ctx.fillText(opt.face?.type==='segment'?'★ CẠNH TỐI ƯU':'★ ĐỈNH TỐI ƯU',s.x+10,s.y+15);
+     }
+    }
+   }
+   if(chosenPoint){
+    const s=B.map(chosenPoint);
+    if(s.x>=pad.l&&s.x<=w-pad.r&&s.y>=pad.t&&s.y<=h-pad.b){
+     ctx.strokeStyle='#e57a28';ctx.lineWidth=2.4;
+     ctx.beginPath();ctx.arc(s.x,s.y,8.5,0,Math.PI*2);ctx.stroke();
+     ctx.fillStyle='#a75f2a';ctx.font='bold 11.5px system-ui';ctx.textAlign='left';
+     ctx.fillText(`${chosenPoint.name||'M'}(${fcoord(chosenPoint.x)}; ${fcoord(chosenPoint.y)})`,s.x+11,s.y+4);
+    }
+   }
+  }
+ }
+
+ function resizeCanvas(){
+  const cv=$('graph');const rect=cv.getBoundingClientRect();
+  if(rect.width<1||rect.height<1)return;
+  const dpr=Math.min(2,window.devicePixelRatio||1);
+  cv.width=Math.round(rect.width*dpr);cv.height=Math.round(rect.height*dpr);
+  const ctx=cv.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);
+  drawGraph();
+ }
+ function refreshGraph(){if(plotReady)drawGraph();}
+ function syncSlider(){
+  if(!currentLP){
+   $('levelSlider').min=0;$('levelSlider').max=1;$('levelSlider').value=0;$('levelText').textContent='k = —';
+   return;
+  }
+  const obj=currentLP.objective;
+  const v=vertices.map(p=>obj.p*p.x+obj.q*p.y);
+  const max=Math.max(10,...v.map(Math.abs),Math.abs(level)*1.2);
+  $('levelSlider').min=String(-max*.25);
+  $('levelSlider').max=String(max*1.35);
+  $('levelSlider').step=String(Math.max(.01,max/600));
+  $('levelSlider').value=String(level);
+  $('levelText').textContent='k = '+fnum(level);
+ }
+
+ // Trợ lý Socratic thông minh: phân tích trạng thái thực tế của học sinh để đặt câu hỏi gợi mở
+ function chatInit(){
+  $('chatlog').innerHTML='';
+  chatReply(`Chào em! Chúng ta đang nghiên cứu tình huống "${active.title}".\nBước đầu tiên: Em hãy đọc bảng dữ kiện và xác định hai đại lượng cần tìm x, y cùng đơn vị của chúng. Khi nào cần gợi ý theo tiến độ bài làm, hãy nhấn “Đánh giá bước hiện tại” nhé!`);
+ }
+ function chatReply(text){
+  const p=document.createElement('div');p.className='bubble bot';p.textContent=text;
+  $('chatlog').append(p);$('chatlog').scrollTop=$('chatlog').scrollHeight;
+ }
+ function generateSocraticHint(query){
+  const t=query.toLowerCase();
+  if(/giải hộ|đáp án|kết quả luôn|làm hộ/.test(t)){
+   return 'Trong phòng thí nghiệm toán học, tự mình tìm ra quy luật mới là điều quý giá nhất! Cô sẽ gợi ý từng bước nhỏ:Hiện tại em đang vướng ở việc lập bất phương trình, tìm tọa độ giao điểm hay tính giá trị F(x; y) tại đỉnh?';
+  }
+  if(/đặt biến|biến|ẩn/.test(t)){
+   return `Em hãy nhìn câu hỏi cuối cùng của đề bài: Đề yêu cầu tìm số lượng gì?\n• Gọi x là "${active.xMeaning}"\n• Gọi y là "${active.yMeaning}"\nTheo em, trong thực tế x và y có thể nhận giá trị âm không? Có bắt buộc phải là số nguyên không?`;
+  }
+  if(/ràng buộc|bất phương|điều kiện/.test(t)){
+   const c0=active.conditions[0];
+   return `Mỗi dòng trong bảng dữ kiện ứng với một bất phương trình dạng a·x + b·y ◇ c.\nVí dụ với "${c0.label}": Mỗi đơn vị ${active.xShort} cần ${fnum(c0.a)}, vậy x đơn vị cần ${fnum(c0.a)}x. Tương tự, y đơn vị ${active.yShort} cần ${fnum(c0.b)}y. Tổng cộng là ${fnum(c0.a)}x + ${fnum(c0.b)}y.\nVì giới hạn là "${c0.op} ${fnum(c0.c)} ${c0.unit||''}" nên ta chọn dấu ${c0.op}. Em hãy áp dụng tương tự cho các dòng còn lại!`;
+  }
+  if(/mục tiêu|lợi nhuận|chi phí/.test(t)){
+   return `Hàm mục tiêu F(x; y) biểu thị đại lượng cần làm ${active.dir==='max'?'lớn nhất (tối đa hóa)':'nhỏ nhất (tối thiểu hóa)'} (${active.unit}).\nMỗi đơn vị x đóng góp ${fnum(active.p)} (${active.unit}), mỗi đơn vị y đóng góp ${fnum(active.q)} (${active.unit}). Vậy tổng giá trị F(x; y) = p·x + q·y sẽ có p, q bằng bao nhiêu?`;
+  }
+  if(/tìm đỉnh|tọa độ đỉnh|giao điểm/.test(t)){
+   if(!plotReady)return 'Trước hết em hãy nhấn “Vẽ miền nghiệm của em” để xuất hiện các đường thẳng biên trên mặt phẳng Oxy đã nhé.';
+   return `Mỗi đỉnh của miền đa giác nghiệm là giao điểm của hai đường thẳng biên.\nĐể tìm tọa độ đỉnh (chẳng hạn giao của đường thẳng d₁ và d₂), ta giải hệ phương trình bậc nhất hai ẩn:\n{ a₁x + b₁y = c₁\n{ a₂x + b₂y = c₂\nSau khi có tọa độ (x; y), em thay vào F(x; y) = px + qy ở Bảng ④ để kiểm tra!`;
+  }
+  if(/đường mức|vectơ|pháp tuyến/.test(t)){
+   return `Đường mức là đường thẳng p·x + q·y = k. Khi k thay đổi, đường thẳng này tịnh tiến song song với chính nó.\n• Vectơ pháp tuyến ∇F = (p; q) chỉ hướng mà giá trị k tăng lên.\n• Do đó, muốn tìm Max ta trượt đường mức theo chiều ∇F đến điểm cuối cùng còn chạm miền nghiệm; muốn tìm Min ta trượt ngược chiều ∇F!`;
+  }
+  // Phân tích tự động theo trạng thái hiện tại của học sinh
+  if(!progress.modelOK){
+   return `Cô vừa quan sát Bước ② của em:\n• Em đã thử kiểm tra mô hình ${progress.checkCount} lần.\n• Hãy đối chiếu từng dòng dữ kiện trong Bảng ① với hệ số a, b, c em nhập. Lưu ý cụm từ "tối đa / không quá" dùng dấu ≤, còn "ít nhất / tối thiểu" dùng dấu ≥ nhé!`;
+  }
+  if(!plotReady){
+   return 'Mô hình của em đã đúng rồi! Hãy nhấn nút “◉ Vẽ miền nghiệm của em” để biểu diễn miền chấp nhận được trên mặt phẳng tọa độ Oxy.';
+  }
+  if(progress.vertexCalculated<Math.min(2,vertices.length)){
+   return `Em đã vẽ được miền nghiệm với ${vertices.length} đỉnh cực biên! Tuy nhiên ở Bảng ④ em mới tự tính đúng ${progress.vertexCalculated}/${vertices.length} đỉnh.\nHãy thay tọa độ (x; y) của các đỉnh còn lại vào công thức F(x; y) = ${fnum(active.p)}x + ${fnum(active.q)}y và nhấn nút “Kiểm tra” ở từng dòng nhé!`;
+  }
+  if(!progress.decisionOK){
+   return `Em đã tính được giá trị F tại các đỉnh! Hãy nhìn xem đỉnh nào cho giá trị F ${active.dir==='max'?'lớn nhất':'nhỏ nhất'}.${active.integer?'\n⚠ Cẩn thận: Bài toán này đòi hỏi x, y là SỐ NGUYÊN. Nếu đỉnh tối ưu có tọa độ phân số, em hãy bật “Lưới điểm nguyên” để chọn điểm nguyên trong miền nghiệm tốt nhất!':''}\nSau đó nhập tọa độ (x; y) vào Bước ⑤ và nhấn “Thẩm định phương án”.`;
+  }
+  return 'Xuất sắc! Em đã hoàn thành từ khâu lập mô hình, khảo sát đỉnh đến thẩm định phương án tối ưu. Đừng quên thử nút “−20% / +20% nguồn lực 1” để xem phương án thay đổi thế nào trước khi xuất Hộ chiếu học tập nhé!';
+ }
+ function ask(text){
+  if(!text.trim())return;
+  const me=document.createElement('div');me.className='bubble me';me.textContent=text;
+  $('chatlog').append(me);
+  chatReply(generateSocraticHint(text));
+ }
+
+ function buildPassport(){
+  const cx=$('decisionX').value,cy=$('decisionY').value;
+  const stamp=new Date().toLocaleDateString('vi-VN');
+  const stName=$('studentName').value.trim()||'................................';
+  const stClass=$('studentClass').value.trim()||'............';
+  const stSchool=$('studentSchool').value.trim()||'................................';
+  const ordered=[...vertices].sort((a,b)=>a.x-b.x||a.y-b.y);
+  const calcLines=ordered.map((v,i)=>{
+   const name=String.fromCharCode(65+i);
+   const vKey=`${name}_${v.x.toFixed(4)}_${v.y.toFixed(4)}`;
+   const st=vertexChecks[vKey];
+   const exactF=currentLP?fnum(currentLP.objective.p*v.x+currentLP.objective.q*v.y,true):'—';
+   return `  • Đỉnh ${name}(${fnum(v.x,true)}; ${fnum(v.y,true)}): Tự tính F = ${st?.input||(showOpt?exactF:'chưa tính')} (${st?.ok?'Đúng':(showOpt?'Đã đối chiếu':'Chưa xác nhận')})`;
+  });
+  return [
+   'LP-LAB 12 – PHIẾU HỌC TẬP QUY HOẠCH TUYẾN TÍNH (TOÁN 12)',
+   `Họ và tên / Nhóm: ${stName} | Lớp: ${stClass} | Trường: ${stSchool}`,
+   `Ngày thực hiện: ${stamp}`,
+   `Tình huống: ${active.title}`,
+   `Nguồn học liệu: ${active.source}`,
+   '',
+   '1. ĐẶT BIẾN VÀ ĐIỀU KIỆN THỰC TIỄN',
+   `• Biến x: ${$('studentX').value||active.xMeaning}`,
+   `• Biến y: ${$('studentY').value||active.yMeaning}`,
+   `• Miền giá trị của biến: ${active.integer?'x, y ∈ ℤ (Số nguyên không âm)':'x, y ∈ ℝ (Số thực không âm)'}`,
+   '',
+   '2. MÔ HÌNH QUY HOẠCH TUYẾN TÍNH',
+   `• Mục tiêu: ${$('studentDir').value==='max'?'Tìm giá trị lớn nhất (Max)':'Tìm giá trị nhỏ nhất (Min)'}`,
+   `• Hàm mục tiêu: F(x; y) = ${formatLinearExpr($('studentP').value,$('studentQ').value,false)} (${active.unit})`,
+   ...inputs.map((c,i)=>`• Ràng buộc ${i+1} (${c.label}): ${formatLinearExpr(c.a,c.b,false)} ${c.op} ${c.c||'?'}`),
+   `• Điều kiện không âm: ${$('nonnegative').checked?'x ≥ 0; y ≥ 0':'Chưa chọn'}`,
+   '',
+   '3. BẢNG KHẢO SÁT CÁC ĐỈNH CỦA MIỀN CHẤP NHẬN ĐƯỢC Ω',
+   `• Số lần tự kiểm tra mô hình: ${progress.checkCount} lần | Mở gợi ý: ${progress.reveal?'Có':'Không (Tự lập 100%)'}`,
+   `• Số đỉnh đã tự tính đúng giá trị F(x; y): ${progress.vertexCalculated}/${ordered.length}`,
+   ...(calcLines.length?calcLines:['  • Chưa khảo sát bảng đỉnh']),
+   `• Thí nghiệm độ nhạy (±20% nguồn lực): ${experimentsChanged?'Đã thực hiện':'Chưa thực hiện'}`,
+   '',
+   '4. QUYẾT ĐỊNH QUẢN TRỊ & LẬP LUẬN PHẢN TƯ',
+   `• Phương án lựa chọn: (x; y) = (${cx||'...'}; ${cy||'...'})`,
+   `• Kết quả thẩm định tối ưu: ${progress.decisionOK?'ĐÃ XÁC NHẬN TỐI ƯU':'Chưa xác nhận tối ưu'}`,
+   '• Lập luận và phân tích nguồn lực dư/hết của học sinh:',
+   $('reflection').value||'.........................................................................'
+  ];
+ }
+ // Tạo mã HTML chuẩn SGK dùng chung cho Xuất PDF/In A4 và Xuất Word (.doc)
+ function buildRichWorksheetHTML(forWord=false){
+  const stamp=new Date().toLocaleDateString('vi-VN');
+  const stName=esc($('studentName').value.trim()||'................................................');
+  const stClass=esc($('studentClass').value.trim()||'................');
+  const stSchool=esc($('studentSchool').value.trim()||'................................................');
+  const cx=esc($('decisionX').value.trim()||'........');
+  const cy=esc($('decisionY').value.trim()||'........');
+  const dir=$('studentDir').value==='max'?'max':'min';
+  const objExpr=formatLinearExpr($('studentP').value||active.p,$('studentQ').value||active.q,false);
+  const graphDataUrl=plotReady?$('graph').toDataURL('image/png'):'';
+  const ordered=[...vertices].sort((a,b)=>a.x-b.x||a.y-b.y);
+  let vertexRowsHtml='';
+  if(ordered.length){
+   ordered.forEach((v,i)=>{
+    const name=String.fromCharCode(65+i);
+    const vKey=`${name}_${v.x.toFixed(4)}_${v.y.toFixed(4)}`;
+    const st=vertexChecks[vKey];
+    const F=currentLP?currentLP.objective.p*v.x+currentLP.objective.q*v.y:0;
+    const valStr=st?.input?esc(st.input):(showOpt?fnum(F,true):'................');
+    const statusStr=st?.ok?'✓ Đúng':(showOpt?'Đã đối chiếu':'Chưa tính');
+    vertexRowsHtml+=`<tr><td><b>${name}</b> (${esc((v.lines||[]).slice(0,2).join(' ∩ '))})</td><td>${fnum(v.x,true)}</td><td>${fnum(v.y,true)}</td><td><b>${valStr}</b></td><td>${statusStr}</td></tr>`;
+   });
+  }else{
+   vertexRowsHtml='<tr><td colspan="5" style="text-align:center">Chưa có dữ liệu khảo sát đỉnh</td></tr>';
+  }
+  const sysRows=inputs.map((c,i)=>{
+   const lhs=formatLinearExpr(c.a,c.b,false);
+   const rhs=String(c.c??'').trim()!==''?c.c:'?';
+   return `<div><b>${esc(lhs)} ${esc(c.op)} ${esc(rhs)}</b> &nbsp; <span style="color:#555;font-size:10pt">(${esc(c.label||('Điều kiện '+(i+1)))})</span></div>`;
+  });
+  if($('nonnegative').checked){
+   sysRows.push(`<div><b>x ≥ 0; &nbsp; y ≥ 0</b>${active.integer?' &nbsp; <b>(x, y ∈ ℤ)</b>':''} &nbsp; <span style="color:#555;font-size:10pt">(Điều kiện không âm)</span></div>`);
+  }
+  return `
+   <div style="font-family:'Times New Roman',serif;color:#000;line-height:1.45">
+    <div style="text-align:center;border-bottom:2px solid #09213f;padding-bottom:8px;margin-bottom:10px">
+     <div style="font-size:10pt;font-weight:bold;color:#116b65;text-transform:uppercase">CHUYÊN ĐỀ HỌC TẬP TOÁN 12 · QUY HOẠCH TUYẾN TÍNH &amp; TỐI ƯU THỰC TIỄN</div>
+     <h1 style="font-size:16pt;margin:4px 0;color:#09213f">PHIẾU HỌC TẬP &amp; HỘ CHIẾU KHÁM PHÁ – LP-LAB 12</h1>
+     <div style="font-size:10.5pt"><b>Họ và tên / Nhóm:</b> ${stName} &nbsp;|&nbsp; <b>Lớp:</b> ${stClass} &nbsp;|&nbsp; <b>Trường:</b> ${stSchool} &nbsp;|&nbsp; <b>Ngày:</b> ${stamp}</div>
+    </div>
+
+    <h2 style="font-size:12.5pt;color:#102b50;border-bottom:1px solid #888;padding-bottom:2px;margin:10px 0 6px">1. Tình huống thực tiễn &amp; Đặt biến</h2>
+    <p style="margin:4px 0"><b>Bài toán:</b> ${esc(active.title)}</p>
+    <p style="margin:4px 0;font-size:10.5pt;color:#222">${esc(active.story)}</p>
+    <table border="1" cellspacing="0" cellpadding="5" style="width:100%;border-collapse:collapse;margin-top:6px;font-size:10.5pt">
+     <tr><td style="width:50%"><b>Gọi <i>x</i> là:</b> ${esc($('studentX').value.trim()||active.xMeaning)}</td><td style="width:50%"><b>Gọi <i>y</i> là:</b> ${esc($('studentY').value.trim()||active.yMeaning)}</td></tr>
+    </table>
+
+    <h2 style="font-size:12.5pt;color:#102b50;border-bottom:1px solid #888;padding-bottom:2px;margin:12px 0 6px">2. Mô hình Toán học (Chuẩn kí hiệu SGK Toán 12)</h2>
+    <p style="margin:4px 0">• <b>Hàm mục tiêu:</b> Tìm <b>${dir}</b> của biểu thức <b><i>F(x; y)</i> = ${esc(objExpr)}</b> (${esc(active.unit)})</p>
+    <p style="margin:4px 0">• <b>Hệ bất phương trình bậc nhất hai ẩn ràng buộc:</b></p>
+    <table cellspacing="0" cellpadding="6" style="margin:4px 0 8px 12px;border-left:3px solid #09213f;background:#f8fbfd">
+     <tr><td style="border:0;font-size:11.5pt">${sysRows.join('')}</td></tr>
+    </table>
+
+    <h2 style="font-size:12.5pt;color:#102b50;border-bottom:1px solid #888;padding-bottom:2px;margin:12px 0 6px">3. Biểu diễn miền chấp nhận được Ω &amp; Khảo sát các đỉnh cực biên</h2>
+    ${graphDataUrl?`<div style="text-align:center;margin:8px 0"><img src="${graphDataUrl}" alt="Đồ thị miền nghiệm" style="max-width:${forWord?'480px':'420px'};height:auto;border:1px solid #ccc"></div>`:'<p style="font-style:italic;color:#555">(Học sinh chưa vẽ đồ thị miền nghiệm)</p>'}
+    <table border="1" cellspacing="0" cellpadding="5" style="width:100%;border-collapse:collapse;margin-top:6px;font-size:10.5pt">
+     <thead><tr style="background:#eef5f9"><th>Đỉnh (Giao điểm biên)</th><th>Hoành độ <i>x</i></th><th>Tung độ <i>y</i></th><th>Giá trị <i>F(x; y) = px + qy</i></th><th>Trạng thái</th></tr></thead>
+     <tbody>${vertexRowsHtml}</tbody>
+    </table>
+
+    <h2 style="font-size:12.5pt;color:#102b50;border-bottom:1px solid #888;padding-bottom:2px;margin:12px 0 6px">4. Quyết định thực tiễn &amp; Báo cáo phân tích nguồn lực</h2>
+    <p style="margin:4px 0">• <b>Phương án lựa chọn:</b> <b>(<i>x</i>; <i>y</i>) = (${cx}; ${cy})</b> &nbsp;|&nbsp; <b>Kết quả thẩm định:</b> ${progress.decisionOK?'<b>✓ ĐÃ XÁC NHẬN TỐI ƯU</b>':'Chưa xác nhận tối ưu'} &nbsp;|&nbsp; <b>Tự kiểm tra mô hình:</b> ${progress.checkCount} lần</p>
+    <p style="margin:4px 0">• <b>Lập luận của học sinh (vì sao phương án tối ưu, nguồn lực nào dùng hết / còn dư):</b></p>
+    <div style="border:1px dotted #666;min-height:55px;padding:8px;background:#fff">${esc($('reflection').value.trim()||'..........................................................................................................................................................................')}</div>
+
+    <table border="1" cellspacing="0" cellpadding="8" style="width:100%;border-collapse:collapse;margin-top:12px;font-size:10.5pt">
+     <tr><td style="width:30%;vertical-align:top"><b>Điểm / Đánh giá của GV:</b><br><br><br></td><td style="width:70%;vertical-align:top"><b>Nhận xét của Giáo viên:</b><br><br><br></td></tr>
+    </table>
+   </div>`;
+ }
+ // 1. Xuất PDF / In phiếu A4 chuẩn SGK
+ function printPassport(){
+  const p=$('printArea');
+  p.innerHTML=buildRichWorksheetHTML(false);
+  setTimeout(()=>window.print(),120);
+ }
+ // 2. Xuất file Word (.DOC) có nhúng sẵn đồ thị và bảng biểu
+ function exportWordPassport(){
+  const content=`<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+   <head><meta charset="utf-8"><title>Phieu hoc tap LP-LAB 12</title>
+   <style>@page{size:21cm 29.7cm;margin:1.5cm}body{font-family:'Times New Roman',serif;font-size:11.5pt}</style>
+   </head><body>${buildRichWorksheetHTML(true)}</body></html>`;
+  const blob=new Blob(['\ufeff'+content],{type:'application/msword;charset=utf-8'});
+  const href=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=href;a.download='Phieu-hoc-tap_LP-LAB12.doc';a.click();
+  setTimeout(()=>URL.revokeObjectURL(href),5000);
+ }
+ // 3. Xuất Phiếu học tập dạng Ảnh (.PNG) độ phân giải cao để nộp bài qua Zalo/Padlet/LMS
+ function exportImagePassport(){
+  const dpi=2,W=1080,H=1360;
+  const cv=document.createElement('canvas');
+  cv.width=W*dpi;cv.height=H*dpi;
+  const ctx=cv.getContext('2d');
+  ctx.scale(dpi,dpi);
+  // Nền trang phiếu
+  ctx.fillStyle='#f4f8fb';ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#ffffff';ctx.strokeStyle='#d5e3ec';ctx.lineWidth=2;
+  ctx.fillRect(24,24,W-48,H-48);ctx.strokeRect(24,24,W-48,H-48);
+  // Header Banner
+  const grad=ctx.createLinearGradient(24,24,W-24,130);
+  grad.addColorStop(0,'#09223f');grad.addColorStop(0.65,'#103963');grad.addColorStop(1,'#0b726e');
+  ctx.fillStyle=grad;ctx.fillRect(24,24,W-48,108);
+  ctx.fillStyle='#8fe4dc';ctx.font='bold 13px system-ui, sans-serif';
+  ctx.fillText('MATHLAB 12 · CHUYÊN ĐỀ 2: QUY HOẠCH TUYẾN TÍNH & TỐI ƯU THỰC TIỄN',48,54);
+  ctx.fillStyle='#ffffff';ctx.font='bold 26px system-ui, sans-serif';
+  ctx.fillText('PHIẾU HỌC TẬP & HỘ CHIẾU KHÁM PHÁ – LP-LAB 12',48,88);
+  const stamp=new Date().toLocaleDateString('vi-VN');
+  const stName=$('studentName').value.trim()||'Chưa điền tên';
+  const stClass=$('studentClass').value.trim()||'12...';
+  const stSchool=$('studentSchool').value.trim()||'THPT...';
+  ctx.fillStyle='#d8eff6';ctx.font='600 13.5px system-ui, sans-serif';
+  ctx.fillText(`Học sinh / Nhóm: ${stName}   |   Lớp: ${stClass}   |   Trường: ${stSchool}   |   Ngày: ${stamp}`,48,115);
+
+  // Mục 1 & 2 (Cột trái) và Đồ thị (Cột phải)
+  let y=158;
+  ctx.fillStyle='#102b50';ctx.font='bold 17px system-ui, sans-serif';
+  ctx.fillText('1. TÌNH HUỐNG & ĐẶT BIẾN: '+active.title,48,y);
+  y+=24;
+  ctx.fillStyle='#2b4458';ctx.font='14px system-ui, sans-serif';
+  ctx.fillText(`• Biến x: ${$('studentX').value.trim()||active.xMeaning}`,56,y);y+=22;
+  ctx.fillText(`• Biến y: ${$('studentY').value.trim()||active.yMeaning}`,56,y);y+=32;
+
+  // Khung Mô hình Toán học chuẩn SGK (bên trái)
+  ctx.fillStyle='#eff8f6';ctx.strokeStyle='#b8dfd8';ctx.lineWidth=1.5;
+  ctx.fillRect(48,y,455,295);ctx.strokeRect(48,y,455,295);
+  ctx.fillStyle='#0f5f58';ctx.font='bold 15px system-ui, sans-serif';
+  ctx.fillText('2. MÔ HÌNH TOÁN HỌC (CHUẨN SGK TOÁN 12)',64,y+28);
+  const dir=$('studentDir').value==='max'?'max':'min';
+  const objExpr=formatLinearExpr($('studentP').value||active.p,$('studentQ').value||active.q,false);
+  ctx.fillStyle='#102b4e';ctx.font='bold italic 17px Georgia, "Times New Roman", serif';
+  ctx.fillText(`Tìm ${dir} F(x; y) = ${objExpr} (${active.unit})`,64,y+58);
+  ctx.fillStyle='#4a657a';ctx.font='13px system-ui, sans-serif';
+  ctx.fillText('với (x; y) thỏa mãn hệ bất phương trình bậc nhất hai ẩn:',64,y+82);
+
+  // Vẽ dấu ngoặc nhọn hệ bất phương trình {
+  const sysRowList=inputs.map(c=>`${formatLinearExpr(c.a,c.b,false)} ${c.op} ${c.c||'?'}`);
+  if($('nonnegative').checked)sysRowList.push(`x ≥ 0;  y ≥ 0${active.integer?'  (x, y ∈ ℤ)':''}`);
+  const braceTop=y+98,braceH=Math.max(60,sysRowList.length*28);
+  ctx.strokeStyle='#0f4c5c';ctx.lineWidth=2.5;
+  ctx.beginPath();
+  ctx.moveTo(82,braceTop);ctx.lineTo(72,braceTop);ctx.lineTo(72,braceTop+braceH);ctx.lineTo(82,braceTop+braceH);
+  ctx.moveTo(72,braceTop+braceH/2);ctx.lineTo(65,braceTop+braceH/2);
+  ctx.stroke();
+  ctx.fillStyle='#102b4e';ctx.font='bold 16px Georgia, "Times New Roman", serif';
+  sysRowList.forEach((line,idx)=>{
+   ctx.fillText(line,92,braceTop+21+idx*28);
+  });
+
+  // Vẽ ảnh chụp Đồ thị miền nghiệm (bên phải)
+  ctx.fillStyle='#ffffff';ctx.strokeStyle='#cfe0eb';ctx.lineWidth=1.5;
+  ctx.fillRect(520,y,512,295);ctx.strokeRect(520,y,512,295);
+  if(plotReady){
+   ctx.drawImage($('graph'),526,y+6,500,283);
+  }else{
+   ctx.fillStyle='#6c8294';ctx.font='bold 14px system-ui, sans-serif';
+   ctx.fillText('(Chưa vẽ đồ thị miền nghiệm trên mặt phẳng Oxy)',615,y+150);
+  }
+
+  // Mục 3: Bảng khảo sát các đỉnh cực biên
+  y+=325;
+  ctx.fillStyle='#102b50';ctx.font='bold 17px system-ui, sans-serif';
+  ctx.fillText('3. BẢNG KHẢO SÁT CÁC ĐỈNH CỦA MIỀN CHẤP NHẬN ĐƯỢC Ω',48,y);
+  y+=14;
+  const cols=[48,310,490,670,890,1032];
+  ctx.fillStyle='#e9f4f8';ctx.fillRect(48,y,984,32);
+  ctx.strokeStyle='#c5d7e3';ctx.strokeRect(48,y,984,32);
+  ctx.fillStyle='#154360';ctx.font='bold 13px system-ui, sans-serif';
+  ['Đỉnh (Giao điểm biên)','Hoành độ x','Tung độ y','Giá trị F(x; y) = px + qy','Trạng thái'].forEach((h,i)=>ctx.fillText(h,cols[i]+10,y+21));
+  y+=32;
+  const ordered=[...vertices].sort((a,b)=>a.x-b.x||a.y-b.y).slice(0,7);
+  if(ordered.length){
+   ordered.forEach((v,i)=>{
+    const name=String.fromCharCode(65+i);
+    const vKey=`${name}_${v.x.toFixed(4)}_${v.y.toFixed(4)}`;
+    const st=vertexChecks[vKey];
+    const F=currentLP?currentLP.objective.p*v.x+currentLP.objective.q*v.y:0;
+    ctx.fillStyle=i%2===0?'#ffffff':'#f9fcfe';
+    ctx.fillRect(48,y,984,30);ctx.strokeRect(48,y,984,30);
+    ctx.fillStyle='#1f364d';ctx.font='13px system-ui, sans-serif';
+    ctx.fillText(`${name} (${(v.lines||[]).slice(0,2).join(' ∩ ')})`,cols[0]+10,y+20);
+    ctx.fillText(fnum(v.x,true),cols[1]+10,y+20);
+    ctx.fillText(fnum(v.y,true),cols[2]+10,y+20);
+    ctx.font='bold 13px system-ui, sans-serif';
+    ctx.fillText(st?.input||(showOpt?fnum(F,true):'Chưa tính'),cols[3]+10,y+20);
+    ctx.fillStyle=st?.ok?'#0d7a5f':'#5c7488';
+    ctx.fillText(st?.ok?'✓ Tự tính đúng':(showOpt?'Đã đối chiếu':'—'),cols[4]+10,y+20);
+    y+=30;
+   });
+  }else{
+   ctx.strokeRect(48,y,984,32);
+   ctx.fillStyle='#6c8294';ctx.font='13px system-ui, sans-serif';
+   ctx.fillText('Chưa có dữ liệu đỉnh được khảo sát.',60,y+21);
+   y+=32;
+  }
+
+  // Mục 4: Quyết định quản trị & Lập luận
+  y+=30;
+  ctx.fillStyle='#102b50';ctx.font='bold 17px system-ui, sans-serif';
+  ctx.fillText('4. QUYẾT ĐỊNH THỰC TIỄN & BÁO CÁO PHẢN TƯ CỦA HỌC SINH',48,y);
+  y+=14;
+  ctx.fillStyle='#fdfaf3';ctx.strokeStyle='#ecd9b0';
+  ctx.fillRect(48,y,984,185);ctx.strokeRect(48,y,984,185);
+  const cx=$('decisionX').value.trim()||'...',cy=$('decisionY').value.trim()||'...';
+  ctx.fillStyle='#143b5d';ctx.font='bold 14.5px system-ui, sans-serif';
+  ctx.fillText(`• Phương án lựa chọn: (x; y) = (${cx}; ${cy})    |    Kết quả thẩm định: ${progress.decisionOK?'✓ ĐÃ XÁC NHẬN TỐI ƯU':'Chưa xác nhận tối ưu'}    |    Số lần tự kiểm tra mô hình: ${progress.checkCount}`,64,y+28);
+  ctx.fillStyle='#2a4054';ctx.font='13.5px system-ui, sans-serif';
+  const refText=$('reflection').value.trim()||'Học sinh chưa ghi nhận xét phản tư.';
+  const words=refText.split(/\s+/);
+  let line='',ly=y+58;
+  for(const w of words){
+   const test=line+(line?' ':'')+w;
+   if(ctx.measureText(test).width>940){
+    ctx.fillText(line,64,ly);line=w;ly+=22;
+    if(ly>y+170)break;
+   }else line=test;
+  }
+  if(line&&ly<=y+170)ctx.fillText(line,64,ly);
+
+  ctx.fillStyle='#687f91';ctx.font='12px system-ui, sans-serif';
+  ctx.fillText('Phiếu học tập điện tử xuất từ LP-LAB 12 (MathLab 12) — Cam kết học thật, tự lập mô hình và tự tính giá trị tại đỉnh.',48,H-36);
+
+  const a=document.createElement('a');
+  a.download='Phieu-hoc-tap_LP-LAB12.png';
+  a.href=cv.toDataURL('image/png');
+  a.click();
+ }
+ function downloadPassport(){
+  const blob=new Blob(['\ufeff'+buildPassport().join('\n')],{type:'text/plain;charset=utf-8'});
+  const href=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=href;a.download='LP-LAB12_Ho-chieu-hoc-tap.txt';a.click();
+  setTimeout(()=>URL.revokeObjectURL(href),5000);
+ }
+ function createCustom(){
+  const err=$('customError');err.textContent='';
+  const title=$('customTitle').value.trim(),story=$('customStory').value.trim();
+  const xm=$('customX').value.trim(),ym=$('customY').value.trim();
+  const p=numeric($('customP').value),q=numeric($('customQ').value),unit=$('customUnit').value.trim();
+  const rows=$('customConstraints').value.split(/\n/).map(l=>l.trim()).filter(Boolean),cs=[];
+  for(const [i,row] of rows.entries()){
+   const parts=row.split('|').map(x=>x.trim());
+   if(parts.length<5){err.textContent=`Điều kiện ${i+1}: cần ghi đủ Tên | a | b | dấu (≤ hoặc ≥) | c | đơn vị.`;return;}
+   const c={label:parts[0],a:numeric(parts[1]),b:numeric(parts[2]),op:parts[3],c:numeric(parts[4]),unit:parts[5]||''};
+   if(!valuesValid(c)||!c.label){err.textContent=`Điều kiện ${i+1}: hệ số không hợp lệ (a, b không được đồng thời bằng 0; dấu chỉ dùng ≤ hoặc ≥).`;return;}
+   cs.push(c);
+  }
+  if(!title||!story||!xm||!ym||!Number.isFinite(p)||!Number.isFinite(q)||!cs.length){
+   err.textContent='Hãy nhập đầy đủ tên bài toán, đề bài, ý nghĩa hai biến, hệ số hàm mục tiêu và ít nhất một ràng buộc.';return;
+  }
+  const id='tutao_'+Date.now();
+  SCENARIOS.push({id,title,source:'Bài toán do giáo viên tự biên soạn trong phiên làm việc.',badge:'Giáo viên tự tạo',story,xMeaning:xm,yMeaning:ym,xShort:'X',yShort:'Y',unit:unit||'đơn vị',p,q,dir:$('customDir').value,integer:$('customInteger').value==='true',conditions:cs,viewMax:Math.max(8,...cs.map(c=>Math.abs(c.c)))});
+  setupSelect();$('customDialog').close();resetScene(id);
+ }
+
+ // Đăng ký sự kiện tương tác
+ $('scenarioSelect').addEventListener('change',e=>resetScene(e.target.value));
+ $('resetBtn').addEventListener('click',()=>resetScene(active.id));
+ $('constraintRows').addEventListener('input',e=>{
+  const row=e.target.closest('.eq-row');if(!row||!e.target.dataset.key)return;
+  const i=Number(row.dataset.i);inputs[i][e.target.dataset.key]=e.target.value;
+  modelVerified=false;progress.modelOK=false;showOpt=false;
+  if(plotReady){plotReady=false;currentLP=null;solveUI();refreshGraph();}
+  updateSGKPreview();updateScaffoldLocks();syncSteps();
+ });
+ $('constraintRows').addEventListener('change',e=>{
+  const row=e.target.closest('.eq-row');
+  if(row&&e.target.dataset.key){inputs[Number(row.dataset.i)][e.target.dataset.key]=e.target.value;updateSGKPreview();}
+ });
+ $('constraintRows').addEventListener('click',e=>{
+  if(e.target.classList.contains('rem')){
+   inputs.splice(Number(e.target.dataset.i),1);
+   renderConstraintRows();modelVerified=false;plotReady=false;currentLP=null;
+   updateSGKPreview();solveUI();updateScaffoldLocks();
+  }
+ });
+ $('addConstraint').addEventListener('click',()=>{
+  inputs.push({label:'Điều kiện '+(inputs.length+1),a:'',b:'',op:'≤',c:''});
+  renderConstraintRows();updateSGKPreview();
+ });
+ $('clearModel').addEventListener('click',()=>{
+  inputs=inputs.map(r=>({...r,a:'',b:'',op:'≤',c:''}));
+  renderConstraintRows();$('studentP').value='';$('studentQ').value='';
+  $('modelResult').textContent='';$('modelResult').className='model-result';
+  modelVerified=false;plotReady=false;currentLP=null;
+  updateSGKPreview();solveUI();updateScaffoldLocks();syncSteps();
+ });
+ $('checkModel').onclick=verifyModel;
+ $('plotStudent').onclick=()=>renderPlot(false);
+ $('revealModel').onclick=showReference;
+ for(const key of ['studentP','studentQ','studentDir','nonnegative']){
+  $(key).addEventListener('input',updateSGKPreview);
+  $(key).addEventListener('change',()=>{
+   modelVerified=false;progress.modelOK=false;showOpt=false;plotReady=false;currentLP=null;
+   updateSGKPreview();solveUI();updateScaffoldLocks();syncSteps();
+  });
+ }
+ $('showOptimal').onclick=()=>{
+  if(!plotReady)return;
+  showOpt=!showOpt;
+  if(showOpt){
+   const r=optimalLP(currentLP.cs,currentLP.objective);
+   if(r.status==='attained')level=r.value;
+   syncSlider();
+  }
+  updateScaffoldLocks();
+  solveUI();
+ };
+ $('levelSlider').oninput=e=>{
+  level=Number(e.target.value);
+  $('levelText').textContent='k = '+fnum(level);
+  refreshGraph();
+ };
+ for(const optId of ['showGrid','showVertices','showLattice','showGrad','snapPoints']){
+  $(optId).onchange=refreshGraph;
+ }
+ $('zoomIn').onclick=()=>{if(!plotReady||!graphView)return;graphView.spanX/=1.28;graphView.spanY/=1.28;refreshGraph();};
+ $('zoomOut').onclick=()=>{if(!plotReady||!graphView)return;graphView.spanX*=1.28;graphView.spanY*=1.28;refreshGraph();};
+ $('fitView').onclick=()=>{if(!plotReady)return;fitPlot();};
+ $('fullscreenGraph').onclick=()=>{
+  const card=$('graphCard');
+  if(document.fullscreenElement){document.exitFullscreen().catch(()=>{});}
+  else if(card.requestFullscreen)card.requestFullscreen().catch(()=>{});
+ };
+ document.addEventListener('fullscreenchange',()=>{
+  setTimeout(resizeCanvas,100);
+  $('fullscreenGraph').textContent=document.fullscreenElement?'Thu nhỏ':'⛶ Toàn màn hình';
+ });
+ $('saveGraph').onclick=()=>{
+  const c=$('graph'),a=document.createElement('a');
+  a.download='LP-LAB12_Mien-nghiem.png';a.href=c.toDataURL('image/png');a.click();
+ };
+
+ // Hỗ trợ cả kéo-thả (Pan) mặt phẳng Oxy và nhấn (Click) để chọn điểm khảo sát M(x; y)
+ const graphCanvas=$('graph');
+ graphCanvas.addEventListener('pointerdown',e=>{
+  if(!plotReady||!currentLP||!graphView)return;
+  const rect=graphCanvas.getBoundingClientRect(),B=chartBounds();
+  const sx=e.clientX-rect.left,sy=e.clientY-rect.top;
+  if(sx<B.pad.l||sx>B.w-B.pad.r||sy<B.pad.t||sy>B.h-B.pad.b)return;
+  graphCanvas.setPointerCapture(e.pointerId);
+  panState={id:e.pointerId,startX:sx,startY:sy,cx:graphView.cx,cy:graphView.cy,scale:B.scale,moved:false};
+ });
+ graphCanvas.addEventListener('pointermove',e=>{
+  if(!panState||e.pointerId!==panState.id||!graphView)return;
+  const rect=graphCanvas.getBoundingClientRect();
+  const sx=e.clientX-rect.left,sy=e.clientY-rect.top;
+  const dx=sx-panState.startX,dy=sy-panState.startY;
+  if(Math.hypot(dx,dy)>5)panState.moved=true;
+  if(panState.moved){
+   graphView.cx=panState.cx-dx/panState.scale;
+   graphView.cy=panState.cy+dy/panState.scale;
+   refreshGraph();
+  }
+ });
+ graphCanvas.addEventListener('pointerup',e=>{
+  if(!panState||e.pointerId!==panState.id)return;
+  const wasMoved=panState.moved;
+  const sx=panState.startX,sy=panState.startY;
+  panState=null;
+  if(!wasMoved&&plotReady&&currentLP){
+   const B=chartBounds(),s={x:sx,y:sy};
+   let p=B.unmap(s),label='M';
+   if($('snapPoints').checked&&vertices.length){
+    const ordered=[...vertices].sort((a,b)=>a.x-b.x||a.y-b.y);
+    const near=ordered.map((t,idx)=>({p:t,name:String.fromCharCode(65+idx),d:Math.hypot(B.map(t).x-s.x,B.map(t).y-s.y)})).sort((a,b)=>a.d-b.d)[0];
+    if(near.d<18){p=near.p;label=near.name;}
+    else{
+     const step=niceStep(Math.max(B.rect.xmax-B.rect.xmin,B.rect.ymax-B.rect.ymin)/30);
+     p={x:Math.round(p.x/step)*step,y:Math.round(p.y/step)*step};
+    }
+   }
+   selectPoint(p,label);
+  }
+ });
+ graphCanvas.addEventListener('wheel',e=>{
+  if(!plotReady||!graphView)return;
+  e.preventDefault();
+  const s=e.deltaY>0?1.13:.885;
+  graphView.spanX=Math.min(1e6,Math.max(.5,graphView.spanX*s));
+  graphView.spanY=Math.min(1e6,Math.max(.5,graphView.spanY*s));
+  refreshGraph();
+ },{passive:false});
+
+ $('experimentDown').onclick=()=>dataChange(0.8);
+ $('experimentUp').onclick=()=>dataChange(1.2);
+ $('experimentReset').onclick=resetExperiment;
+ $('checkDecision').onclick=checkDecision;
+ $('printBtn').onclick=printPassport;
+ $('printPassport').onclick=printPassport;
+ $('exportImgTopBtn').onclick=exportImagePassport;
+ $('exportImagePassport').onclick=exportImagePassport;
+ $('exportWordTopBtn').onclick=exportWordPassport;
+ $('exportWordPassport').onclick=exportWordPassport;
+ $('downloadPassport').onclick=downloadPassport;
+ $('teacherTips').onclick=()=>$('teacherTipContent').classList.toggle('invisible');
+ document.querySelectorAll('[data-to]').forEach(el=>el.onclick=()=>$(el.dataset.to).scrollIntoView({behavior:'smooth',block:'start'}));
+ document.querySelectorAll('[data-reflect]').forEach(el=>el.onclick=()=>{
+  const t=$('reflection');t.value+=(t.value?'\n':'')+el.dataset.reflect;t.focus();
+ });
+ document.querySelectorAll('[data-ask]').forEach(el=>el.onclick=()=>ask(el.dataset.ask));
+ $('sendChat').onclick=()=>{ask($('chatInput').value);$('chatInput').value='';};
+ $('chatInput').onkeydown=e=>{if(e.key==='Enter')$('sendChat').click();};
+ $('customBtn').onclick=()=>$('customDialog').showModal();
+ $('closeCustom').onclick=()=>$('customDialog').close();
+ $('createCustom').onclick=createCustom;
+ window.addEventListener('resize',resizeCanvas);
+
+ setupSelect();
+ resetScene('xuong');
+ window.LPLAB12_TEST={SCENARIOS,optimalLP,integerLP,withNonNeg,intersections,feasible,toFraction,resetScene,renderPlot,showReference,getActive:()=>active};
+})();
+</script>
+</body>
+</html>
